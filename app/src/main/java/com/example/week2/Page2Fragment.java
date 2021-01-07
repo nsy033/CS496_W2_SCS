@@ -1,8 +1,20 @@
 package com.example.week2;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class Page2Fragment extends Fragment {
 
@@ -28,8 +40,8 @@ public class Page2Fragment extends Fragment {
      * @return A new instance of fragment Page1Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Page1Fragment newInstance(String param1, String param2) {
-        Page1Fragment fragment = new Page1Fragment();
+    public static Page2Fragment newInstance(String param1, String param2) {
+        Page2Fragment fragment = new Page2Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -45,4 +57,67 @@ public class Page2Fragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+
 }
+
+/*class GridAdapter extends BaseAdapter{
+    Context context;
+    int layout;
+    ArrayList<GalleryImage> img;
+    LayoutInflater inf;
+
+
+    public GridAdapter(Context context, int layout, ArrayList<GalleryImage> img){
+        this.context = context;
+        this.layout = layout;
+        this.img = img;
+        inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return img.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return img.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ImageView imageView = new ImageView(context);
+
+        //Point display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+       // display.getRealSize(size); // or getSize(size)
+        int width = size.x;
+
+        width /= 3;
+        width -= 10;
+
+        imageView.setLayoutParams(new GridView.LayoutParams(width, width));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setPadding(5, 5, 5, 5);
+
+        imageView.setImageBitmap(img.get(position).getRd());
+        final int pos = position;
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+        return imageView;
+    }
+}*/
+
