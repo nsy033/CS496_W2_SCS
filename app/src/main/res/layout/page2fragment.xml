@@ -17,7 +17,7 @@
     </GridView>
 
     <ImageButton
-        android:id="@+id/camera"
+        android:id="@+id/addImageButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_gravity="bottom|right"
