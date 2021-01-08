@@ -5,22 +5,26 @@
     android:background="#FFFFFF"
     android:orientation="horizontal" >
 
-    <GridView
-        android:id="@+id/gridView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="50dp"
-        android:gravity="center_horizontal"
-        android:numColumns="3"
-        android:paddingTop="42dp">
-
-    </GridView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/testImageView"
+        />
 
     <ImageButton
         android:id="@+id/addImageButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_gravity="bottom|right"
+        android:layout_margin="12dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_launcher_background" />
+
+    <ImageButton
+        android:id="@+id/callImageButton"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="bottom|left"
         android:layout_margin="12dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_launcher_background" />

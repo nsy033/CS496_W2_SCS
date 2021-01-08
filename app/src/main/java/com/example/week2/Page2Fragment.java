@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,7 @@ public class Page2Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page2fragment, null);
         Intent intent = new Intent(getActivity(), AddImageActivity.class);
+        ImageView test = view.findViewById(R.id.testImageView);
         ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
         imgAddButton.setOnClickListener(new View.OnClickListener(){
 
@@ -78,6 +80,17 @@ public class Page2Fragment extends Fragment {
                  startActivity(intent);
              }
          });
+        ImageButton callimagButton = view.findViewById(R.id.callImageButton);
+        callimagButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                String url  = "http://192.249.18.249:3000/uploads/23d5d78352b92a1b1797a186927c12d1.png";
+                ImageLoadTask task = new ImageLoadTask(url,test);
+                task.execute();
+            }
+        });
+
 
         return view;
     }
