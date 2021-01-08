@@ -1,15 +1,23 @@
 package com.example.week2;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class ListViewAdapter extends BaseAdapter {
     public static ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
@@ -39,7 +47,15 @@ public class ListViewAdapter extends BaseAdapter {
         iconImageView.setImageBitmap(listViewItem.getIcon());
         nameTextView.setText(listViewItem.getTitle());
         numberTextView.setText(listViewItem.getDesc());
-
+/*
+        convertView.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Profile.class);
+                context.startActivity(intent);
+            }
+        });
+*/
         return convertView;
     }
 
@@ -64,4 +80,5 @@ public class ListViewAdapter extends BaseAdapter {
 
         listViewItemList.add(item);
     }
+
 }

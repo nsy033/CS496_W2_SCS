@@ -1,10 +1,17 @@
 package com.example.week2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ContentResolver;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -53,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
     public static String test= "";
     public static ArrayList<ListViewItem> testlist = new ArrayList<>();
     public static ArrayList<ContactItem> contactItems = new ArrayList<ContactItem>();
-    private static boolean check = true;
+    public static boolean check = true;
+
+    Bitmap user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        Bitmap tmp =  BitmapFactory.decodeResource(getResources(), R.drawable.iconuser);
+        user = tmp;
     }
 
     // 마지막으로 뒤로 가기 버튼을 눌렀던 시간 저장
@@ -100,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static class JSONTask extends AsyncTask<String, String, String> {
+    public class JSONTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... urls) {
@@ -197,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     number= "";
                     flag = true;
                     testlist.add(lvi);
-                    adapter.addItem(null ,lvi.getTitle(), lvi.getDesc(), null, null);
+                    if(!lvi.getTitle().equals(LogIn.user_name)) listViewItemList.add(lvi);
                     adapter.notifyDataSetChanged();
                 }
             }

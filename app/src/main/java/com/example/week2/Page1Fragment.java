@@ -1,12 +1,15 @@
 package com.example.week2;
 
 import android.content.ContentProviderOperation;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -84,10 +87,21 @@ public class Page1Fragment extends Fragment {
         listview = (ListView) view.findViewById(R.id.listview);
         adapter = new ListViewAdapter();
         listViewItemList = new ArrayList<ListViewItem>();
+
         for(int i=0; i<testlist.size(); i++) {
-            adapter.addItem(null ,testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+            if(! LogIn.user_name.equals(testlist.get(i).getTitle()))
+                adapter.addItem(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
         }
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), Profile.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

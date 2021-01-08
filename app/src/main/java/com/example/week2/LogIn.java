@@ -18,6 +18,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
@@ -26,18 +28,22 @@ import com.facebook.login.widget.LoginButton;
 import com.example.week2.LoginCallback;
 import com.facebook.CallbackManager;
 
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 import static java.security.AccessController.getContext;
 
 public class LogIn extends AppCompatActivity {
     private Context mContext;
-    private LoginButton btn_facebook_login;
+    private Button btn_custom_login, btn_custom_logout, btn_custom_go;
+    private TextView tx;
     private LoginCallback mLoginCallback;
     private CallbackManager mCallbackManager;
     public static String user_name = "";
     public static String user_email = "";
-    private boolean flag = true;
+    private boolean flag = false;
+    public static boolean login_s = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,29 +56,54 @@ public class LogIn extends AppCompatActivity {
         mCallbackManager = CallbackManager.Factory.create();
         mLoginCallback = new LoginCallback();
 
-        Button button = (Button) findViewById(R.id.get_start);
-        button.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(flag){
-                    Toast.makeText(getBaseContext(), "Please Log in First", Toast.LENGTH_SHORT).show();
-                    flag = true;
-                }
-            }
-        });
-
-        flag= true;
+        AccessToken.refreshCurrentAccessTokenAsync();
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
                 updateWithToken(newAccessToken);
-                flag = false;
             }
         };
+        accessTokenTracker.startTracking();
+        AccessToken.refreshCurrentAccessTokenAsync();
 
-        btn_facebook_login = (LoginButton) findViewById(R.id.btn_facebook_login);
-        btn_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"));
-        btn_facebook_login.registerCallback(mCallbackManager, mLoginCallback);
+        btn_custom_login = (Button) findViewById(R.id.btn_custom_login);
+        btn_custom_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager loginManager = LoginManager.getInstance();
+                loginManager.logInWithReadPermissions(LogIn.this,
+                        Arrays.asList("public_profile", "email"));
+                loginManager.registerCallback(mCallbackManager, mLoginCallback);
+            }
+        });
+
+        btn_custom_logout = (Button) findViewById(R.id.btn_custom_logout);
+        btn_custom_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                flag=false;
+
+                btn_custom_login.setEnabled(true);
+                btn_custom_logout.setEnabled(false);
+                btn_custom_go.setEnabled(false);
+            }
+        });
+
+        btn_custom_go = (Button) findViewById(R.id.btn_custom_go);
+        btn_custom_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tx = (TextView) findViewById(R.id.login_text);
+
+        btn_custom_login.setEnabled(true);
+        btn_custom_logout.setEnabled(false);
+        btn_custom_go.setEnabled(false);
 
     }
 
@@ -80,21 +111,23 @@ public class LogIn extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        if(login_s) {
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+            btn_custom_login.setEnabled(false);
+            btn_custom_logout.setEnabled(true);
+            btn_custom_go.setEnabled(true);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void updateWithToken(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
-            Button button = (Button) findViewById(R.id.get_start);
-            button.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
-                }
-            });
+            tx.setText("Hello " + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName());
+            btn_custom_login.setEnabled(false);
+            btn_custom_logout.setEnabled(true);
+            btn_custom_go.setEnabled(true);
         }
     }
 }

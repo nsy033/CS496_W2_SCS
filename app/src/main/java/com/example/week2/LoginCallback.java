@@ -9,7 +9,9 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import static com.example.week2.LogIn.login_s;
 
 import org.json.JSONObject;
 
@@ -20,17 +22,20 @@ public class LoginCallback implements FacebookCallback<LoginResult> {
     public void onSuccess(LoginResult loginResult) {
         Log.e("Callback :: ", "onSuccess");
         requestMe(loginResult.getAccessToken());
+        login_s = true;
     }
     // 로그인 창을 닫을 경우, 호출됩니다.
     @Override
     public void onCancel() {
         Log.e("Callback :: ", "onCancel");
+        login_s = false;
     }
     // 로그인 실패 시에 호출됩니다.
 
     @Override
     public void onError(FacebookException error) {
         Log.e("Callback :: ", "onError : " + error.getMessage());
+        login_s = false;
     }
 
     // 사용자 정보 요청
