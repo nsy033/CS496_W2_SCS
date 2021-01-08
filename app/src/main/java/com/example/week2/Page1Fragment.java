@@ -42,7 +42,8 @@ public class Page1Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView textview;
+    static ListView listview = null;
+    static ListViewAdapter adapter = null;
 
     public Page1Fragment() {
         // Required empty public constructor
@@ -80,8 +81,8 @@ public class Page1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page1fragment, null);
 
-        ListView listview = (ListView) view.findViewById(R.id.listview);
-        ListViewAdapter adapter = new ListViewAdapter();
+        listview = (ListView) view.findViewById(R.id.listview);
+        adapter = new ListViewAdapter();
         listViewItemList = new ArrayList<ListViewItem>();
         for(int i=0; i<testlist.size(); i++) {
             adapter.addItem(null ,testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -37,6 +38,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.week2.Page1Fragment.adapter;
+import static com.example.week2.Page1Fragment.listview;
+import static com.example.week2.ListViewAdapter.listViewItemList;
 
 import static java.sql.DriverManager.println;
 
@@ -66,6 +71,33 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+    }
+
+    // 마지막으로 뒤로 가기 버튼을 눌렀던 시간 저장
+    private long backKeyPressedTime = 0;
+    // 첫 번째 뒤로 가기 버튼을 누를 때 표시
+    private Toast toast;
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        // 기존 뒤로 가기 버튼의 기능을 막기 위해 주석 처리 또는 삭제
+
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간에 1초를 더해 현재 시간과 비교 후
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간이 1초가 지났으면 Toast 출력
+        // 2500 milliseconds = 2.5 seconds
+        if (System.currentTimeMillis() > backKeyPressedTime + 1000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "Press the back key again to exit the app", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간에 1초를 더해 현재 시간과 비교 후
+        // 마지막으로 뒤로 가기 버튼을 눌렀던 시간이 1초가 지나지 않았으면 종료
+        if (System.currentTimeMillis() <= backKeyPressedTime + 1000) {
+            toast.cancel();
+            finishAffinity();
+        }
     }
 
     public static class JSONTask extends AsyncTask<String, String, String> {
@@ -165,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
                     number= "";
                     flag = true;
                     testlist.add(lvi);
+                    adapter.addItem(null ,lvi.getTitle(), lvi.getDesc(), null, null);
+                    adapter.notifyDataSetChanged();
                 }
             }
         }
