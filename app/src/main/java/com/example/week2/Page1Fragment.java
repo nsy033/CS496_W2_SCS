@@ -1,12 +1,35 @@
 package com.example.week2;
 
 import android.content.ContentProviderOperation;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import static com.example.week2.ListViewAdapter.listViewItemList;
+import static com.example.week2.MainActivity.test;
+import static com.example.week2.MainActivity.testlist;
 
 public class Page1Fragment extends Fragment {
 
@@ -18,6 +41,8 @@ public class Page1Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView textview;
 
     public Page1Fragment() {
         // Required empty public constructor
@@ -48,6 +73,22 @@ public class Page1Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.page1fragment, null);
+
+        ListView listview = (ListView) view.findViewById(R.id.listview);
+        ListViewAdapter adapter = new ListViewAdapter();
+        listViewItemList = new ArrayList<ListViewItem>();
+        for(int i=0; i<testlist.size(); i++) {
+            adapter.addItem(null ,testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+        }
+        listview.setAdapter(adapter);
+
+        return view;
     }
 
 }
