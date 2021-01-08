@@ -1,8 +1,27 @@
 package com.example.week2;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import static com.example.week2.MainActivity.testlist;
 
 public class Page2Fragment extends Fragment {
 
@@ -28,8 +47,8 @@ public class Page2Fragment extends Fragment {
      * @return A new instance of fragment Page1Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Page1Fragment newInstance(String param1, String param2) {
-        Page1Fragment fragment = new Page1Fragment();
+    public static Page2Fragment newInstance(String param1, String param2) {
+        Page2Fragment fragment = new Page2Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -44,5 +63,26 @@ public class Page2Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.page2fragment, null);
+        Intent intent = new Intent(getActivity(), AddImageActivity.class);
+        ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
+        imgAddButton.setOnClickListener(new View.OnClickListener(){
+
+             @Override
+             public void onClick(View v) {
+                 startActivity(intent);
+             }
+         });
+
+        return view;
+    }
+
+
 }
+
+
