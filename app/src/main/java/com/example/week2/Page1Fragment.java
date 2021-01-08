@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.test;
 import static com.example.week2.MainActivity.testlist;
 
@@ -81,6 +82,7 @@ public class Page1Fragment extends Fragment {
 
         ListView listview = (ListView) view.findViewById(R.id.listview);
         ListViewAdapter adapter = new ListViewAdapter();
+        listViewItemList = new ArrayList<ListViewItem>();
         for(int i=0; i<testlist.size(); i++) {
             adapter.addItem(null ,testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
         }

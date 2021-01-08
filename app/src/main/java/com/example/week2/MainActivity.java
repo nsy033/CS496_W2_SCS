@@ -3,13 +3,26 @@ package com.example.week2;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -25,6 +38,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.println;
+
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
@@ -32,10 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static String test= "";
     public static ArrayList<ListViewItem> testlist = new ArrayList<>();
+    public static ArrayList<ContactItem> contactItems = new ArrayList<ContactItem>();
+    private static boolean check = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getContactList();
+
         new JSONTask().execute("http://192.249.18.241:27018/post");
         setContentView(R.layout.activity_main);
 
@@ -56,8 +75,11 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("user_id", "androidTest");
-                jsonObject.accumulate("name", "yun");
+
+                for(int i=0; i<contactItems.size(); i++) {
+                    jsonObject.accumulate("user_id", contactItems.get(i).getUser_name());
+                    jsonObject.accumulate("name", contactItems.get(i).getPhNumberChanged());
+                }
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -71,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
                     con.setRequestMethod("POST");//POST방식으로 보냄
                     con.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
                     con.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
-
-
                     con.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
                     con.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
                     con.setDoInput(true);//Inputstream으로 서버로부터 응답을 받겠다는 의미
                     con.connect();
 
-                    //서버로 보내기위해서 스트림 만듬
+                    //서버에 데이터 보내기
                     OutputStream outStream = con.getOutputStream();
                     //버퍼를 생성하고 넣음
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
@@ -86,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     writer.flush();
                     writer.close();//버퍼를 받아줌
 
-                    //서버로 부터 데이터를 받음
+                    //서버로부터 데이터를 받음
                     InputStream stream = con.getInputStream();
 
                     reader = new BufferedReader(new InputStreamReader(stream));
@@ -98,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         buffer.append(line);
                     }
 
-                    return buffer.toString();//서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
+                    return buffer.toString();//서버로부터 받은 값을 리턴해줌
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -148,5 +168,90 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public ArrayList<ContactItem> getContactList() {
+
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        Uri uri1 = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+        Uri uri2 = ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI;
+        boolean flag_cursor1 = true;
+        boolean flag_cursor2 = true;
+
+        Cursor cursor = null;
+        Cursor cursor1= null;
+        Cursor cursor2 = null;
+        ContentResolver contentResolver = getContentResolver();
+        String sortorder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+        try{
+            cursor = contentResolver.query(uri, null,null,null, sortorder);
+            cursor1 = contentResolver.query(uri1, null,null,null, sortorder);
+            cursor2 = contentResolver.query(uri2, null,null,null, sortorder);
+        } catch(Exception ex) {
+            Log.e("Error on contact", ex.getMessage());
+        }
+
+        if(cursor.moveToFirst()) {
+            cursor1.moveToFirst();
+            cursor2.moveToFirst();
+
+            do {
+                ContactItem contactItem = new ContactItem();
+/*
+                String[] temp = cursor.getColumnNames();
+                for(int i=0; i<temp.length; i++){
+                    System.out.println(temp[i]);
+                }
+*/
+                contactItem.setUser_name(cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                ));
+                contactItem.setUser_phNumber(cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                ));
+                contactItem.setPhoto_id(cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID)
+                ));
+
+                if(cursor1.moveToNext() && flag_cursor1){
+                    cursor1.moveToPrevious();
+                    contactItem.setMail(cursor1.getString(
+                            cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)
+                    ));
+                }
+                else if(flag_cursor1){
+                    cursor1.moveToPrevious();
+                    contactItem.setMail(cursor1.getString(
+                            cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)
+                    ));
+                    flag_cursor1 = false;
+                }
+
+                if(cursor2.moveToNext() && flag_cursor2){
+                    cursor2.moveToPrevious();
+                    contactItem.setAddress(cursor2.getString(
+                            cursor2.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA)
+                    ));
+                }
+                else if(flag_cursor2){
+                    cursor2.moveToPrevious();
+                    contactItem.setAddress(cursor2.getString(
+                            cursor2.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA)
+                    ));
+                    flag_cursor2 = false;
+                }
+
+                /*
+                contactItem.setPerson_id(cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.Contacts._ID)
+                ));*/
+
+                contactItems.add(contactItem);
+                cursor1.moveToNext();
+                cursor2.moveToNext();
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return contactItems;
     }
 }
