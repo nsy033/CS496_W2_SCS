@@ -376,7 +376,8 @@ public class AddImageActivity extends AppCompatActivity{
 
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
+
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "sejin");
 
             Call<ResponseBody> req = apiService.postImage(body, name);
             req.enqueue(new Callback<ResponseBody>() {
