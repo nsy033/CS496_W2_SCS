@@ -19,7 +19,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
     private String url;
     private ContentValues values;
     private String method;
-    public static ArrayList<RecyclerViewItem> recyclerViewItems = new ArrayList<RecyclerViewItem>();
+    public static ArrayList<Photo> recyclerViewItems = new ArrayList<Photo>();
 
     public NetworkTask(String url, ContentValues values, String method) {
         this.url = url;
@@ -49,9 +49,10 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 JSONArray jsonArray = new JSONArray(s);
                 for(int i = 0; i< jsonArray.length();i++){
                     JSONObject photoObject = jsonArray.getJSONObject(i);
-                    RecyclerViewItem posting = new RecyclerViewItem();
-                    posting.setContent(photoObject.getString("explain"));
-                    posting.setTitle(photoObject.getString("userList"));
+                    Photo posting = new Photo();
+                    posting.setExplain(photoObject.getString("explain"));
+                    ArrayList<String> userList = new ArrayList<String>();
+                    posting.setUserList(userList);
                     recyclerViewItems.add(posting);
                     adapter.addItem(posting);
                 }

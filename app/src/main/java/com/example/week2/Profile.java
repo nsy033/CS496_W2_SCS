@@ -44,9 +44,9 @@ public class Profile extends AppCompatActivity {
         int pos = intent.getExtras().getInt("position");
 
         TextView tx1 = (TextView) findViewById(R.id.textView1);
-        tx1.setText(listViewItemList.get(pos).getTitle());
+        tx1.setText(listViewItemList.get(pos).getName());
         TextView tx2 = (TextView) findViewById(R.id.textView2);
-        tx2.setText(listViewItemList.get(pos).getDesc());
+        tx2.setText(listViewItemList.get(pos).getPhone());
 
         for(int i=0;i<3;i++) {
             GalleryImage gi = new GalleryImage();
