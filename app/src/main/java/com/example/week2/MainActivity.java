@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getContactList();
+//        getContactList();
 
         new JSONTask().execute("http://192.249.18.241:27018/post");
         setContentView(R.layout.activity_main);
@@ -119,22 +119,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
                 JSONObject jsonObject = new JSONObject();
-
-                for(int i=0; i<contactItems.size(); i++) {
-                    jsonObject.accumulate("user_id", contactItems.get(i).getUser_name());
-                    jsonObject.accumulate("name", contactItems.get(i).getPhNumberChanged());
-                }
-
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
 
                 try {
-                    //URL url = new URL("http://192.168.25.16:3000/users");
-                    URL url = new URL(urls[0]);
-                    //연결을 함
+                    URL url = new URL("http://192.168.25.16:3000/getuser");
                     con = (HttpURLConnection) url.openConnection();
-
-                    con.setRequestMethod("POST");//POST방식으로 보냄
+                    con.setRequestMethod("GET");
                     con.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
                     con.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
                     con.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
@@ -152,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
                     //서버로부터 데이터를 받음
                     InputStream stream = con.getInputStream();
-
                     reader = new BufferedReader(new InputStreamReader(stream));
 
                     StringBuffer buffer = new StringBuffer();
@@ -197,30 +187,8 @@ public class MainActivity extends AppCompatActivity {
             boolean flag = true;
             adapter.clear();
             testlist=new ArrayList<ListViewItem>();
-            for(int i=0; i<test.length(); i++){
-                if(flag && test.charAt(i) !='/') name = name + test.charAt(i);
-                else if(flag) {
-                    flag = false;
-                }
-                else if(test.charAt(i) != '*') number = number + test.charAt(i);
-                else{
-                    ListViewItem lvi = new ListViewItem();
-                    lvi.setTitle(name);
-                    lvi.setDesc(number);
-                    name = "";
-                    number= "";
-                    flag = true;
-                    testlist.add(lvi);
-                    if(!lvi.getTitle().equals(LogIn.user_name)) {
-                        listViewItemList.add(lvi);
-                    }
-                    else{
-                        listViewItemList.add(0,lvi);
-                    }
-                    adapter.notifyDataSetChanged();
-                    //listview.setAdapter(adapter);
-                }
-            }
+
+
         }
     }
 
