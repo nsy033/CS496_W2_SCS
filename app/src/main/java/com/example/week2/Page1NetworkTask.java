@@ -1,24 +1,25 @@
 package com.example.week2;
 
 import android.content.ContentValues;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Console;
 import java.util.ArrayList;
 
-public class NetworkTask extends AsyncTask<Void, Void, String> {
+import static com.example.week2.Page1Fragment.adapter;
+import static com.example.week2.Page1Fragment.listViewItem;
+import static com.example.week2.Page1Fragment.listview;
+
+public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
     private String url;
     private ContentValues values;
     private String method;
-    public static ArrayList<RecyclerViewItem> recyclerViewItems = new ArrayList<RecyclerViewItem>();
 
-    public NetworkTask(String url, ContentValues values, String method) {
+
+    public Page1NetworkTask(String url, ContentValues values, String method) {
         this.url = url;
         this.values = values;
         this.method = method;
@@ -42,14 +43,15 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
         if (method == "GET"){
             try{
                 //Json parsing
-
                 JSONArray jsonArray = new JSONArray(s);
+
                 for(int i = 0; i< jsonArray.length();i++){
-                    JSONObject photoObject = jsonArray.getJSONObject(i);
-                    RecyclerViewItem posting = new RecyclerViewItem();
-                    posting.setContent(photoObject.getString("explain"));
-                    posting.setTitle(photoObject.getString("userList"));
-                    recyclerViewItems.add(posting);
+                    JSONObject userObject = jsonArray.getJSONObject(i);
+                    ListViewItem list = new ListViewItem();
+                    list.setTitle(userObject.getString("name"));
+                    list.setMail(userObject.getString("email"));
+                    list.setDesc(userObject.getString("phone"));
+                    adapter.addItem(list.getIcon(),list.getTitle(),list.getDesc(), list.getMail(),list.getAddress());
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
@@ -64,5 +66,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 //Log.e("success",s);
             }
         }
+        listview.setAdapter(adapter);
     }
 }
