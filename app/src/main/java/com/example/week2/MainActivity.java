@@ -43,6 +43,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     public static String test= "";
-    public static ArrayList<ListViewItem> testlist = new ArrayList<>();
+    public static ArrayList<User> testlist = new ArrayList<User>();
     public static ArrayList<ContactItem> contactItems = new ArrayList<ContactItem>();
 
     Bitmap user = null;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        getContactList();
 
-
+        //new JSONTask().execute("http://192.249.18.249:3000/getuser/");
         setContentView(R.layout.activity_main);
 
         tabLayout = findViewById(R.id.tabLayout);

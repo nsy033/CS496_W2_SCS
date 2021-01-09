@@ -18,12 +18,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
+import static com.example.week2.Page2Fragment.recyclerView;
 import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class ListViewAdapter extends BaseAdapter {
-    public static ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
+    public static ArrayList<User> listViewItemList = new ArrayList<User>() ;
     Filter listFilter;
 
     public ListViewAdapter() {}
@@ -47,20 +50,11 @@ public class ListViewAdapter extends BaseAdapter {
         TextView nameTextView = (TextView) convertView.findViewById(R.id.textView1);
         TextView numberTextView = (TextView) convertView.findViewById(R.id.textView2);
 
-        ListViewItem listViewItem = listViewItemList.get(position);
+        User listViewItem = listViewItemList.get(position);
 
-        iconImageView.setImageBitmap(listViewItem.getIcon());
-        nameTextView.setText(listViewItem.getTitle());
-        numberTextView.setText(listViewItem.getDesc());
-/*
-        convertView.setOnClickListener(new AdapterView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, Profile.class);
-                context.startActivity(intent);
-            }
-        });
-*/
+        nameTextView.setText(listViewItem.getName());
+        numberTextView.setText(listViewItem.getPhone());
+        Glide.with(recyclerView).load(listViewItem.user_profile_photo).into(iconImageView);
         return convertView;
     }
 
@@ -74,32 +68,33 @@ public class ListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position) ;
     }
 
-    public void addItem(Bitmap icon, String title, String desc, String mail, String address) {
-        ListViewItem item = new ListViewItem();
+    public void addItem(Bitmap icon, String title, String desc, String mail, String profile) {
+        User item = new User();
 
-        item.setIcon(icon);
-        item.setTitle(title);
-        item.setDesc(desc);
-        item.setMail(mail);
-        item.setAddress(address);
+
+        item.setName(title);
+        item.setPhone(desc);
+        item.setEmail(mail);
+        item.setUser_profile(profile);
 
         listViewItemList.add(item);
     }
 
-    public void addFront(Bitmap icon, String title, String desc, String mail, String address) {
-        ListViewItem item = new ListViewItem();
+    public void addFront(Bitmap icon, String title, String desc, String mail, String profile) {
 
-        item.setIcon(icon);
-        item.setTitle(title);
-        item.setDesc(desc);
-        item.setMail(mail);
-        item.setAddress(address);
+        User item = new User();
+
+
+        item.setName(title);
+        item.setPhone(desc);
+        item.setEmail(mail);
+        item.setUser_profile(profile);
 
         listViewItemList.add(0, item);
     }
 
     public void clear(){
-        listViewItemList=new ArrayList<ListViewItem>();
+        listViewItemList=new ArrayList<User>();
     }
 
 }

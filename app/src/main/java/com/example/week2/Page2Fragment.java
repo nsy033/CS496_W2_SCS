@@ -120,7 +120,7 @@ public class Page2Fragment extends Fragment {
         private String url;
         private ContentValues values;
         private String method;
-        static ArrayList<RecyclerViewItem> recyclerViewItems = new ArrayList<RecyclerViewItem>();
+        static ArrayList<Photo> recyclerViewItems = new ArrayList<Photo>();
 
         public NetworkTask(String url, ContentValues values, String method) {
             this.url = url;
@@ -152,11 +152,12 @@ public class Page2Fragment extends Fragment {
 
                     for(int i = 0; i< jsonArray.length();i++){
                         JSONObject photoObject = jsonArray.getJSONObject(i);
-                        RecyclerViewItem posting = new RecyclerViewItem();
-                        posting.setContent(photoObject.getString("explain"));
-                        posting.setTitle(photoObject.getString("userList"));
+                        Photo posting = new Photo();
+                        posting.setExplain(photoObject.getString("explain"));
+                        ArrayList<String> userList = new ArrayList<String>();
+                        posting.setUserList(userList);
                         getImageurl = "http://192.249.18.249:3000/" + photoObject.getString("server_place");
-                        posting.setResId(getImageurl);
+                        posting.setServer_place(getImageurl);
 
                         adapter.addItem(posting);
 

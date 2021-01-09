@@ -9,13 +9,8 @@ public class Photo {
     String explain;
     int index;
 
-    public Photo(ArrayList<String> userList, String server_place, String time, String explain, int index){
-        this.userList = userList;
-        this.server_place = server_place;
-        this.time = time;
-        this.explain = explain;
-        this.index = index;
-    }
+    public Photo(){
+            }
 
     public String getServer_place(){
         return server_place;
@@ -28,5 +23,25 @@ public class Photo {
     }
     public int getIndex() { return index; }
 
+    public ArrayList<String> getUserList(){return userList;}
 
+    public void setUserList(ArrayList<String> userList) {
+        this.userList = userList;
+    }
+
+    public void setServer_place(String server_place) {
+        this.server_place = server_place;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setExplain(String explain) {
+        this.explain = explain;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

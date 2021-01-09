@@ -58,7 +58,7 @@ public class Page1Fragment extends Fragment {
     private String mParam2;
     MenuItem mSearch;
     static ListView listview = null;
-    static ArrayList<ListViewItem> listViewItem = new ArrayList<ListViewItem>();
+    static ArrayList<User> listViewItem = new ArrayList<User>();
     static ListViewAdapter adapter = new ListViewAdapter();
 
     public Page1Fragment() {
@@ -137,7 +137,7 @@ public class Page1Fragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment1_menu, menu);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
-        ArrayList<ListViewItem> tmpList = new ArrayList<ListViewItem>();
+        ArrayList<User> tmpList = new ArrayList<User>();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
 
@@ -152,7 +152,7 @@ public class Page1Fragment extends Fragment {
                 if(newText.length()>0) {
                     tmpList.clear();
                     for (int i = 0; i < testlist.size(); i++) {
-                        if (testlist.get(i).getTitle().toLowerCase().contains(newText)) {
+                        if (testlist.get(i).getName().toLowerCase().contains(newText)) {
                             tmpList.add(testlist.get(i));
                         }
                     }

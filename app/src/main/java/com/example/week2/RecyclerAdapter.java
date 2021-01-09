@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import static com.example.week2.Page2Fragment.recyclerView;
@@ -17,7 +19,7 @@ import static com.example.week2.Page2Fragment.recyclerView;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
     // adapter에 들어갈 list 입니다.
-    private ArrayList<RecyclerViewItem> listData = new ArrayList<>();
+    private ArrayList<Photo> listData = new ArrayList<>();
 
     @NonNull
     @Override
@@ -40,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         return listData.size();
     }
 
-    void addItem(RecyclerViewItem data) {
+    void addItem(Photo data) {
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
     }
@@ -62,10 +64,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             imageView = itemView.findViewById(R.id.imageView);
         }
 
-        void onBind(RecyclerViewItem data) {
-            textView1.setText(data.getTitle());
-            textView2.setText(data.getContent());
-            Glide.with(recyclerView).load(data.getResId()).into(this.imageView);
+        void onBind(Photo data) {
+            textView1.setText(data.getTime());
+            textView2.setText(data.getExplain());
+            Glide.with(recyclerView).load(data.getServer_place()).into(this.imageView);
 
         }
     }
