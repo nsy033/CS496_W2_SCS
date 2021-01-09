@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public ArrayList<ContactItem> getContactList() {
 
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
