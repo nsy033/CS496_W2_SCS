@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,11 +111,7 @@ public class Page2Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-        /*ArrayList<RecyclerViewItem> list = networkTask.recyclerViewItems;
-        adapter.addItem(list.get(0));
-        adapter.addItem(list.get(1));*/
 
-        recyclerView.setAdapter(adapter);
 
 
         return view;
@@ -156,27 +153,21 @@ public class Page2Fragment extends Fragment {
                     for(int i = 0; i< jsonArray.length();i++){
                         JSONObject photoObject = jsonArray.getJSONObject(i);
                         RecyclerViewItem posting = new RecyclerViewItem();
-
                         posting.setContent(photoObject.getString("explain"));
                         posting.setTitle(photoObject.getString("userList"));
-
                         getImageurl = "http://192.249.18.249:3000/" + photoObject.getString("server_place");
+                        posting.setResId(getImageurl);
+
                         adapter.addItem(posting);
+
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
-               // ImageLoadTask task = new ImageLoadTask(getImageurl,recyclerViewImageView);
-               // task.execute();
+
                 recyclerView.setAdapter(adapter);
-//            System.out.println("CHECK : " + contactItems.size());
-//            for(int i = 0; i< contactItems.size() ; i++){
-//                Bitmap sampleBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.person);
-//                ContactItem ci = contactItems.get(i);
-//                adapter.addItem(sampleBitmap, ci.getUser_name(), ci.getUser_phNumber(),
-//                        ci.getMail(), "sample address");
-//            }
-//            listview.setAdapter(adapter);
+
+
             }
             else if(method == "POST"){
                 if(s == "fail"){

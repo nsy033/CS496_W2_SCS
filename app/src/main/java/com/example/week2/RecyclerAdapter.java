@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import static com.example.week2.Page2Fragment.recyclerView;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
     // adapter에 들어갈 list 입니다.
@@ -63,7 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         void onBind(RecyclerViewItem data) {
             textView1.setText(data.getTitle());
             textView2.setText(data.getContent());
-
+            Glide.with(recyclerView).load(data.getResId()).into(this.imageView);
 
         }
     }

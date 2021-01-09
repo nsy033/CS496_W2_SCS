@@ -12,6 +12,9 @@ import org.json.JSONObject;
 import java.io.Console;
 import java.util.ArrayList;
 
+import static com.example.week2.Page2Fragment.adapter;
+import static com.example.week2.Page2Fragment.recyclerView;
+
 public class NetworkTask extends AsyncTask<Void, Void, String> {
     private String url;
     private ContentValues values;
@@ -50,6 +53,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                     posting.setContent(photoObject.getString("explain"));
                     posting.setTitle(photoObject.getString("userList"));
                     recyclerViewItems.add(posting);
+                    adapter.addItem(posting);
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
@@ -64,5 +68,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 //Log.e("success",s);
             }
         }
+        recyclerView.setAdapter(adapter);
     }
 }

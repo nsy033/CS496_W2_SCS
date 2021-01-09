@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        getContactList();
 
-        //new JSONTask().execute("http://192.249.18.249:3000/getuser/");
+
         setContentView(R.layout.activity_main);
 
         tabLayout = findViewById(R.id.tabLayout);
