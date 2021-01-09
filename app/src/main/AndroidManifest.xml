@@ -41,12 +41,10 @@
 
         </provider>
 
-        <activity android:name=".MainActivity">
-
-        </activity>
-
-        <activity android:name=".AddImageActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Profile"></activity>
+        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".AddImageActivity"></activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
