@@ -81,4 +81,20 @@ public class ListViewAdapter extends BaseAdapter {
         listViewItemList.add(item);
     }
 
+    public void addFront(Bitmap icon, String title, String desc, String mail, String address) {
+        ListViewItem item = new ListViewItem();
+
+        item.setIcon(icon);
+        item.setTitle(title);
+        item.setDesc(desc);
+        item.setMail(mail);
+        item.setAddress(address);
+
+        listViewItemList.add(0, item);
+    }
+
+    public void clear(){
+        listViewItemList=new ArrayList<ListViewItem>();
+    }
+
 }

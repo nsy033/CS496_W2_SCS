@@ -27,6 +27,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
 
 public class Profile extends AppCompatActivity {
@@ -43,9 +44,9 @@ public class Profile extends AppCompatActivity {
         int pos = intent.getExtras().getInt("position");
 
         TextView tx1 = (TextView) findViewById(R.id.textView1);
-        tx1.setText(testlist.get(pos).getTitle());
+        tx1.setText(listViewItemList.get(pos).getTitle());
         TextView tx2 = (TextView) findViewById(R.id.textView2);
-        tx2.setText(testlist.get(pos).getDesc());
+        tx2.setText(listViewItemList.get(pos).getDesc());
 
         for(int i=0;i<3;i++) {
             GalleryImage gi = new GalleryImage();

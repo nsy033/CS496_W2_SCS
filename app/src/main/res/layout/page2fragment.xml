@@ -11,6 +11,13 @@
         android:id = "@+id/testImageView"
         />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:paddingTop="48dp"
+        android:background="#F0F0F0"/>
+
     <ImageButton
         android:id="@+id/addImageButton"
         android:layout_width="90dp"

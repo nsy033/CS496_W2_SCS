@@ -195,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
             String name = "";
             String number = "";
             boolean flag = true;
+            adapter.clear();
+            testlist=new ArrayList<ListViewItem>();
             for(int i=0; i<test.length(); i++){
                 if(flag && test.charAt(i) !='/') name = name + test.charAt(i);
                 else if(flag) {
@@ -209,7 +211,11 @@ public class MainActivity extends AppCompatActivity {
                     number= "";
                     flag = true;
                     testlist.add(lvi);
-                    if(!lvi.getTitle().equals(LogIn.user_name)) listViewItemList.add(lvi);
+                    if(!lvi.getTitle().equals(LogIn.user_name))
+                        listViewItemList.add(lvi);
+                    else{
+                        listViewItemList.add(0,lvi);
+                    }
                     adapter.notifyDataSetChanged();
                 }
             }

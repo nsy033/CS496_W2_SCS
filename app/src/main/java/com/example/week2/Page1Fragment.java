@@ -46,7 +46,7 @@ public class Page1Fragment extends Fragment {
     private String mParam2;
 
     static ListView listview = null;
-    static ListViewAdapter adapter = null;
+    static ListViewAdapter adapter = new ListViewAdapter();
 
     public Page1Fragment() {
         // Required empty public constructor
@@ -85,21 +85,30 @@ public class Page1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.page1fragment, null);
 
         listview = (ListView) view.findViewById(R.id.listview);
-        adapter = new ListViewAdapter();
-        listViewItemList = new ArrayList<ListViewItem>();
+        adapter.clear();
 
         for(int i=0; i<testlist.size(); i++) {
             if(! LogIn.user_name.equals(testlist.get(i).getTitle()))
                 adapter.addItem(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+            else {
+                adapter.addFront(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+            }
         }
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), Profile.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
+
+                if(position > 0) {
+                    Intent intent = new Intent(getActivity(), Profile.class);
+                    intent.putExtra("position", position);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), EditProfile.class);
+                    startActivity(intent);
+                }
             }
         });
 

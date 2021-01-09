@@ -37,12 +37,12 @@ import static java.security.AccessController.getContext;
 public class LogIn extends AppCompatActivity {
     private Context mContext;
     private Button btn_custom_login, btn_custom_logout, btn_custom_go;
-    private TextView tx;
+    static TextView tx;
     private LoginCallback mLoginCallback;
     private CallbackManager mCallbackManager;
     public static String user_name = "";
     public static String user_email = "";
-    private boolean flag = false;
+    private boolean flag = true;
     public static boolean login_s = false;
 
     @Override
@@ -60,7 +60,10 @@ public class LogIn extends AppCompatActivity {
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                startTracking();
                 updateWithToken(newAccessToken);
+                flag=false;
+                stopTracking();
             }
         };
         accessTokenTracker.startTracking();
@@ -74,6 +77,9 @@ public class LogIn extends AppCompatActivity {
                 loginManager.logInWithReadPermissions(LogIn.this,
                         Arrays.asList("public_profile", "email"));
                 loginManager.registerCallback(mCallbackManager, mLoginCallback);
+
+                accessTokenTracker.startTracking();
+                AccessToken.refreshCurrentAccessTokenAsync();
             }
         });
 
@@ -83,7 +89,7 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View view) {
                 LoginManager.getInstance().logOut();
                 flag=false;
-
+                tx.setText("Please Log In");
                 btn_custom_login.setEnabled(true);
                 btn_custom_logout.setEnabled(false);
                 btn_custom_go.setEnabled(false);
@@ -112,11 +118,11 @@ public class LogIn extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if(login_s) {
-
+/*
             btn_custom_login.setEnabled(false);
             btn_custom_logout.setEnabled(true);
             btn_custom_go.setEnabled(true);
-
+*/
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -124,7 +130,13 @@ public class LogIn extends AppCompatActivity {
 
     private void updateWithToken(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
-            tx.setText("Hello " + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName());
+            //if(Profile.getCurrentProfile() != null) {
+                if (flag){
+                    tx.setText("Hello " + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName());
+                    user_name = Profile.getCurrentProfile().getLastName() + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName();
+                    user_email = Profile.getCurrentProfile().getId();
+                }
+            //}
             btn_custom_login.setEnabled(false);
             btn_custom_logout.setEnabled(true);
             btn_custom_go.setEnabled(true);
