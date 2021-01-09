@@ -211,12 +211,14 @@ public class MainActivity extends AppCompatActivity {
                     number= "";
                     flag = true;
                     testlist.add(lvi);
-                    if(!lvi.getTitle().equals(LogIn.user_name))
+                    if(!lvi.getTitle().equals(LogIn.user_name)) {
                         listViewItemList.add(lvi);
+                    }
                     else{
                         listViewItemList.add(0,lvi);
                     }
                     adapter.notifyDataSetChanged();
+                    //listview.setAdapter(adapter);
                 }
             }
         }

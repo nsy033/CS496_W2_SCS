@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +24,8 @@ import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class ListViewAdapter extends BaseAdapter {
     public static ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
+    Filter listFilter;
+
     public ListViewAdapter() {}
 
     @Override
