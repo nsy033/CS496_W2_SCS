@@ -3,7 +3,7 @@ package com.example.week2;
 public class RecyclerViewItem {
     private String title;
     private String content;
-    private int resId;
+    private String resId;
 
     public String getTitle() {
         return title;
@@ -21,11 +21,11 @@ public class RecyclerViewItem {
         this.content = content;
     }
 
-    public int getResId() {
+    public String getResId() {
         return resId;
     }
 
-    public void setResId(int resId) {
+    public void setResId(String resId) {
         this.resId = resId;
     }
 }
