@@ -101,13 +101,22 @@ public class Page2Fragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         adapter = new RecyclerAdapter();
+
+        ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
+        imgAddButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
         /*ArrayList<RecyclerViewItem> list = networkTask.recyclerViewItems;
         adapter.addItem(list.get(0));
         adapter.addItem(list.get(1));*/
 
         recyclerView.setAdapter(adapter);
 
-        ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
+
         return view;
     }
     public static class NetworkTask extends AsyncTask<Void, Void, String> {
@@ -159,9 +168,7 @@ public class Page2Fragment extends Fragment {
                 }
                // ImageLoadTask task = new ImageLoadTask(getImageurl,recyclerViewImageView);
                // task.execute();
-
                 recyclerView.setAdapter(adapter);
-
 //            System.out.println("CHECK : " + contactItems.size());
 //            for(int i = 0; i< contactItems.size() ; i++){
 //                Bitmap sampleBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.person);

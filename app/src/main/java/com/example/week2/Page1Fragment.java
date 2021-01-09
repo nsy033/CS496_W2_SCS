@@ -58,6 +58,7 @@ public class Page1Fragment extends Fragment {
     private String mParam2;
     MenuItem mSearch;
     static ListView listview = null;
+    static ArrayList<ListViewItem> listViewItem = new ArrayList<ListViewItem>();
     static ListViewAdapter adapter = new ListViewAdapter();
 
     public Page1Fragment() {
@@ -96,18 +97,20 @@ public class Page1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page1fragment, null);
         setHasOptionsMenu(true);
+
         listview = (ListView) view.findViewById(R.id.listview);
         adapter.clear();
+        String Url = "http://192.249.18.249:3000/getuser/";
+        Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
+        networkTask.execute();
 
-        for(int i=0; i<testlist.size(); i++) {
-            if(! LogIn.user_name.equals(testlist.get(i).getTitle()))
-                adapter.addItem(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+       /* for(int i=0; i<listViewItem.size(); i++) {
+            if(! LogIn.user_name.equals(listViewItem.get(i).getTitle()))
+                adapter.addItem(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
             else {
-                adapter.addFront(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+                adapter.addFront(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
             }
-        }
-        listview.setAdapter(adapter);
-
+        }*/
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -127,6 +130,7 @@ public class Page1Fragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
@@ -149,7 +153,7 @@ public class Page1Fragment extends Fragment {
                         tmpList.add(testlist.get(i));
                     }
                 }
-                listViewItemList = tmpList;
+ //               listViewItemList = tmpList;
                 adapter.notifyDataSetChanged();
                 return false;
             }
