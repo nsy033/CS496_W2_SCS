@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.example.week2.ListViewAdapter.listViewItemList;
+import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page1Fragment.adapter;
 import static com.example.week2.Page1Fragment.listViewItem;
 import static com.example.week2.Page1Fragment.listview;
@@ -44,15 +46,34 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
             try{
                 //Json parsing
                 JSONArray jsonArray = new JSONArray(s);
-
+                adapter.clear();
+                testlist = new ArrayList<ListViewItem>();
                 for(int i = 0; i< jsonArray.length();i++){
                     JSONObject userObject = jsonArray.getJSONObject(i);
+
                     ListViewItem list = new ListViewItem();
                     list.setTitle(userObject.getString("name"));
                     list.setMail(userObject.getString("email"));
                     list.setDesc(userObject.getString("phone"));
-                    adapter.addItem(list.getIcon(),list.getTitle(),list.getDesc(), list.getMail(),list.getAddress());
+
+                    if(LogIn.user_name.equals(list.getTitle())) {
+                        testlist.add(0, list);
+                        adapter.addFront(null, list.getTitle(), list.getDesc(), null, null);
+                    }
+                    else {
+                        testlist.add(list);
+                        adapter.addItem(null, list.getTitle(), list.getDesc(), null, null);
+                    }
+
+//                    if(! LogIn.user_name.equals(testlist.get(i).getTitle()))
+//                        adapter.addItem(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+//                    else {
+//                        adapter.addFront(null, testlist.get(i).getTitle(), testlist.get(i).getDesc(), null, null);
+//                    }
+                    //adapter.addItem(list.getIcon(),list.getTitle(),list.getDesc(), list.getMail(),list.getAddress());
                 }
+                adapter.notifyDataSetChanged();
+                System.out.println(listViewItemList);
             }catch (JSONException e) {
                 e.printStackTrace();
             }

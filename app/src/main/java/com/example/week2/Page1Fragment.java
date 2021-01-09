@@ -104,15 +104,14 @@ public class Page1Fragment extends Fragment {
         Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
         networkTask.execute();
 
-
-       /* for(int i=0; i<listViewItem.size(); i++) {
+        adapter.clear();
+        /*for(int i=0; i<listViewItem.size(); i++) {
             if(! LogIn.user_name.equals(listViewItem.get(i).getTitle()))
                 adapter.addItem(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
             else {
                 adapter.addFront(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
             }
         }*/
-
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,6 +131,7 @@ public class Page1Fragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
@@ -148,14 +148,22 @@ public class Page1Fragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                tmpList.clear();
-                for (int i = 0; i<testlist.size();i++){
-                    if(testlist.get(i).getTitle().toLowerCase().contains(newText)){
-                        tmpList.add(testlist.get(i));
+
+                if(newText.length()>0) {
+                    tmpList.clear();
+                    for (int i = 0; i < testlist.size(); i++) {
+                        if (testlist.get(i).getTitle().toLowerCase().contains(newText)) {
+                            tmpList.add(testlist.get(i));
+                        }
                     }
+                    listViewItemList = tmpList;
+                    adapter.notifyDataSetChanged();
+                    return false;
                 }
-                listViewItemList = tmpList;
-                adapter.notifyDataSetChanged();
+                else{
+                    listViewItemList = testlist;
+                    adapter.notifyDataSetChanged();
+                }
                 return false;
             }
 
