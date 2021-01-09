@@ -7,9 +7,9 @@ public class User {
     String phone;
     String email;
     String user_profile;
-    ArrayList<Photo> posting;
+    String posting;
 
-    public User(String name, String phone, String email, String user_profile, ArrayList<Photo> posting){
+    public User(String name, String phone, String email, String user_profile, String posting){
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -34,7 +34,7 @@ public class User {
         return user_profile;
     }
 
-    public ArrayList<Photo> getPosting(){
+    public String getPosting(){
         return posting;
     }
 

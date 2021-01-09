@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     public static String test= "";
     public static ArrayList<ListViewItem> testlist = new ArrayList<>();
     public static ArrayList<ContactItem> contactItems = new ArrayList<ContactItem>();
-    public static boolean check = true;
 
     Bitmap user = null;
 
@@ -112,85 +111,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class JSONTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
-                JSONObject jsonObject = new JSONObject();
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                try {
-                    URL url = new URL("http://192.168.25.16:3000/getuser");
-                    con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("GET");
-                    con.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
-                    con.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
-                    con.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
-                    con.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
-                    con.setDoInput(true);//Inputstream으로 서버로부터 응답을 받겠다는 의미
-                    con.connect();
-
-                    //서버에 데이터 보내기
-                    OutputStream outStream = con.getOutputStream();
-                    //버퍼를 생성하고 넣음
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    writer.write(jsonObject.toString());
-                    writer.flush();
-                    writer.close();//버퍼를 받아줌
-
-                    //서버로부터 데이터를 받음
-                    InputStream stream = con.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-
-                    return buffer.toString();//서버로부터 받은 값을 리턴해줌
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (con != null) {
-                        con.disconnect();
-                    }
-                    try {
-                        if (reader != null) {
-                            reader.close();//버퍼를 닫아줌
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            test = result;
-
-            String name = "";
-            String number = "";
-            boolean flag = true;
-            adapter.clear();
-            testlist=new ArrayList<ListViewItem>();
-
-
-        }
-    }
 
     public ArrayList<ContactItem> getContactList() {
 
