@@ -91,8 +91,11 @@ public class LogIn extends AppCompatActivity {
                 flag=false;
                 tx.setText("Please Log In");
                 btn_custom_login.setEnabled(true);
+                btn_custom_login.setVisibility(getCurrentFocus().VISIBLE);
                 btn_custom_logout.setEnabled(false);
+                btn_custom_logout.setVisibility(getCurrentFocus().INVISIBLE);
                 btn_custom_go.setEnabled(false);
+                btn_custom_go.setVisibility(getCurrentFocus().INVISIBLE);
             }
         });
 
@@ -108,8 +111,11 @@ public class LogIn extends AppCompatActivity {
         tx = (TextView) findViewById(R.id.login_text);
 
         btn_custom_login.setEnabled(true);
+        btn_custom_login.setVisibility(getCurrentFocus().VISIBLE);
         btn_custom_logout.setEnabled(false);
+        btn_custom_logout.setVisibility(getCurrentFocus().INVISIBLE);
         btn_custom_go.setEnabled(false);
+        btn_custom_go.setVisibility(getCurrentFocus().INVISIBLE);
 
     }
 
@@ -130,16 +136,19 @@ public class LogIn extends AppCompatActivity {
 
     private void updateWithToken(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
-            //if(Profile.getCurrentProfile() != null) {
+            if(Profile.getCurrentProfile() != null) {
                 if (flag){
                     tx.setText("Hello " + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName());
                     user_name = Profile.getCurrentProfile().getLastName() + Profile.getCurrentProfile().getFirstName() + Profile.getCurrentProfile().getMiddleName();
                     user_email = Profile.getCurrentProfile().getId();
                 }
-            //}
+            }
             btn_custom_login.setEnabled(false);
+            btn_custom_login.setVisibility(getCurrentFocus().INVISIBLE);
             btn_custom_logout.setEnabled(true);
+            btn_custom_logout.setVisibility(getCurrentFocus().VISIBLE);
             btn_custom_go.setEnabled(true);
+            btn_custom_go.setVisibility(getCurrentFocus().VISIBLE);
         }
     }
 }

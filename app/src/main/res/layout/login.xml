@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,28 +10,33 @@
     tools:context=".LogIn">
 
     <TextView
+        android:id="@+id/login_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_text"
-        android:layout_gravity="center_horizontal"
-        android:text="Please Log In"/>
+        android:layout_gravity="center|center_horizontal"
+        android:paddingBottom="100dp"
+        android:text="Please Log In" />
 
     <Button
         android:id="@+id/btn_custom_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="log in with facebook" />
+
     <Button
         android:id="@+id/btn_custom_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="log out" />
 
     <Button
         android:id="@+id/btn_custom_go"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Started"
-        />
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="Get Started" />
 
-</LinearLayout>
+</FrameLayout>
