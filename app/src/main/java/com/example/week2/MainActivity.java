@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public static String test= "";
     public static ArrayList<ListViewItem> testlist = new ArrayList<>();
     public static ArrayList<ContactItem> contactItems = new ArrayList<ContactItem>();
+
+    public static ArrayList<User> userlist = new ArrayList<>();
     public static boolean check = true;
 
     Bitmap user = null;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        getContactList();
 
-        new JSONTask().execute("http://192.249.18.241:27018/post");
+        new JSONTask().execute("http://192.249.18.249:3000/getuser/");
         setContentView(R.layout.activity_main);
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -119,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //JSONObject를 만들고 key value 형식으로 값을 저장해준다.
                 JSONObject jsonObject = new JSONObject();
+
+
+               /* for(int i=0; i<userlist.size(); i++) {
+                    jsonObject.accumulate("name", userlist.get(i).getName());
+                    jsonObject.accumulate("phone", userlist.get(i).getPhone());
+                    jsonObject.accumulate("email", userlist.get(i).getEmail());
+                    jsonObject.accumulate("user_profile", userlist.get(i).getUser_profile());
+                    jsonObject.accumulate("posting", userlist.get(i).getPosting());
+                }*/
+
+
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
 
@@ -183,11 +196,42 @@ public class MainActivity extends AppCompatActivity {
             test = result;
 
             String name = "";
-            String number = "";
+            String phone = "";
+            String email = "";
+            String user_profile = "";
+            String posting = "";
+
+
             boolean flag = true;
             adapter.clear();
             testlist=new ArrayList<ListViewItem>();
+            int i=0;
 
+/*
+            for(i=0; i<test.length(); i++){
+                if(flag && test.charAt(i) !='/') name = name + test.charAt(i);
+                else if(flag) {
+                    flag = false;
+                }
+                else if(test.charAt(i) != '*') phone = phone + test.charAt(i);
+                else{
+                    ListViewItem lvi = new ListViewItem();
+                    lvi.setTitle(name);
+                    lvi.setDesc(phone);
+                    name = "";
+                    phone = "";
+                    flag = true;
+                    testlist.add(lvi);
+                    if(!lvi.getTitle().equals(LogIn.user_name)) {
+                        listViewItemList.add(lvi);
+                    }
+                    else{
+                        listViewItemList.add(0,lvi);
+                    }
+                    adapter.notifyDataSetChanged();
+                    //listview.setAdapter(adapter);
+                }
+            }*/
 
         }
     }
