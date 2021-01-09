@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
@@ -50,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private TextView textView2;
         private ImageView imageView;
 
+
         ItemViewHolder(View itemView) {
             super(itemView);
 
@@ -61,7 +64,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         void onBind(RecyclerViewItem data) {
             textView1.setText(data.getTitle());
             textView2.setText(data.getContent());
-            imageView.setImageResource(data.getResId());
+
+
         }
     }
 }
