@@ -67,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getContactList();
 
-        //new JSONTask().execute("http://192.249.18.249:3000/getuser/");
         setContentView(R.layout.activity_main);
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -112,89 +110,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public ArrayList<ContactItem> getContactList() {
-
-        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        Uri uri1 = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
-        Uri uri2 = ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI;
-        boolean flag_cursor1 = true;
-        boolean flag_cursor2 = true;
-
-        Cursor cursor = null;
-        Cursor cursor1= null;
-        Cursor cursor2 = null;
-        ContentResolver contentResolver = getContentResolver();
-        String sortorder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-        try{
-            cursor = contentResolver.query(uri, null,null,null, sortorder);
-            cursor1 = contentResolver.query(uri1, null,null,null, sortorder);
-            cursor2 = contentResolver.query(uri2, null,null,null, sortorder);
-        } catch(Exception ex) {
-            Log.e("Error on contact", ex.getMessage());
-        }
-
-        if(cursor.moveToFirst()) {
-            cursor1.moveToFirst();
-            cursor2.moveToFirst();
-
-            do {
-                ContactItem contactItem = new ContactItem();
-/*
-                String[] temp = cursor.getColumnNames();
-                for(int i=0; i<temp.length; i++){
-                    System.out.println(temp[i]);
-                }
-*/
-                contactItem.setUser_name(cursor.getString(
-                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                ));
-                contactItem.setUser_phNumber(cursor.getString(
-                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                ));
-                contactItem.setPhoto_id(cursor.getString(
-                        cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID)
-                ));
-
-                if(cursor1.moveToNext() && flag_cursor1){
-                    cursor1.moveToPrevious();
-                    contactItem.setMail(cursor1.getString(
-                            cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)
-                    ));
-                }
-                else if(flag_cursor1){
-                    cursor1.moveToPrevious();
-                    contactItem.setMail(cursor1.getString(
-                            cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)
-                    ));
-                    flag_cursor1 = false;
-                }
-
-                if(cursor2.moveToNext() && flag_cursor2){
-                    cursor2.moveToPrevious();
-                    contactItem.setAddress(cursor2.getString(
-                            cursor2.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA)
-                    ));
-                }
-                else if(flag_cursor2){
-                    cursor2.moveToPrevious();
-                    contactItem.setAddress(cursor2.getString(
-                            cursor2.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DATA)
-                    ));
-                    flag_cursor2 = false;
-                }
-
-                /*
-                contactItem.setPerson_id(cursor.getString(
-                        cursor.getColumnIndex(ContactsContract.Contacts._ID)
-                ));*/
-
-                contactItems.add(contactItem);
-                cursor1.moveToNext();
-                cursor2.moveToNext();
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return contactItems;
-    }
 }

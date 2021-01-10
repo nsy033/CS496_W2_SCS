@@ -6,35 +6,122 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/myphoto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="40dp"
         android:src="@drawable/iconuser"></ImageView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:text="Name"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="15dp"
-        android:textSize="20dp"></TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="right"
+            android:text="Name"
+            android:textSize="20dp"></TextView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:text="Number"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="30dp"
-        android:textSize="20dp"></TextView>
+        <TextView
+            android:id="@+id/myname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="left"
+            android:text="MyName"
+            android:textColor="#3E3B3B"
+            android:textSize="20dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="right"
+            android:text="Profile"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/myprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:text="MyProfile"
+            android:textColor="#3E3B3B"
+            android:textSize="15dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="right"
+            android:text="Number"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/myphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:text="MyNumber"
+            android:textColor="#3E3B3B"
+            android:textSize="15dp"></TextView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="right"
+            android:text="Mail"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/mymail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="left"
+            android:text="MyMail"
+            android:textColor="#3E3B3B"
+            android:textSize="15dp"></TextView>
+
+    </LinearLayout>
 
     <GridView
+        android:id="@+id/myposting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gridView1"
-        android:numColumns="5"></GridView>
+        android:layout_margin="15dp"
+        android:numColumns="4"></GridView>
 
 </LinearLayout>

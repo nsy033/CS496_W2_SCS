@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.Manifest.permission.CAMERA;
@@ -67,6 +70,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,7 +96,10 @@ import retrofit2.Retrofit;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.example.week2.LogIn.user_name;
 import static com.example.week2.MainActivity.testlist;
+import static com.example.week2.Page1Fragment.adapter;
+import static com.example.week2.Page1Fragment.listview;
 
 public class AddImageActivity extends AppCompatActivity{
 
@@ -107,28 +114,29 @@ public class AddImageActivity extends AppCompatActivity{
     Bitmap mBitmap;
     TextView textView;
     private String carry = "";
-    private ArrayList<String> items = new ArrayList<>();
-    private ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, items) ;
+    ListView listView_addimage;
+    EditText edt;
+    String time;
+    JSONArray user_list = new JSONArray();
+    ArrayList<String> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addimage_activity);
 
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, items) ;
+
         fabCamera = findViewById(R.id.fab);
         fabUpload = findViewById(R.id.fabUpload);
         //textView = findViewById(R.id.textView);
-        EditText edt = (EditText) findViewById(R.id.et1);
-        String description = edt.getText().toString();
-        if(description.length()>0) {
-            carry = edt.getText().toString();
-        }
+        edt = (EditText) findViewById(R.id.et1);
 
         for(int i=1;i<testlist.size(); i++) {
             items.add(testlist.get(i).getName());
         }
-//        ListView listview = (ListView) findViewById(R.id.choose_subjects_List) ;
-//        listview.setAdapter(adapter) ;
+        listView_addimage = (ListView) findViewById(R.id.choose_subjects_List) ;
+        listView_addimage.setAdapter(adapter) ;
 
         askPermissions();
         initRetrofitClient();
@@ -149,8 +157,30 @@ public class AddImageActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
-                if (mBitmap != null)
+                if (mBitmap != null) {
+                    SparseBooleanArray checkedItems = listView_addimage.getCheckedItemPositions();
+                    int count = adapter.getCount();
+                    user_list = new JSONArray();
+                    user_list.put(user_name);
+                    for(int i=count-1; i>=0; i--) {
+                        if(checkedItems.get(i)) {
+                            user_list.put(items.get(i));
+                        }
+                    }
+                    String description = edt.getText().toString();
+                    if(description.length()>0) {
+                        carry = edt.getText().toString();
+                    }
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    time = format.format(now);
+
+                    System.out.println(carry);
+                    System.out.println(user_list);
+                    System.out.println(time);
+
                     multipartImageUpload();
+                }
                 else {
                     Toast.makeText(getApplicationContext(), "Bitmap is null. Try again", Toast.LENGTH_SHORT).show();
                 }
@@ -370,8 +400,8 @@ public class AddImageActivity extends AppCompatActivity{
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("explain", carry);
-            jsonObject.put("userList", "여기에 userList");
-            jsonObject.put("time","여기에 시간");
+            jsonObject.put("userList", user_list);
+            jsonObject.put("time",time);
 
 
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
