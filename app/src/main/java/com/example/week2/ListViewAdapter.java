@@ -56,6 +56,7 @@ public class ListViewAdapter extends BaseAdapter {
         numberTextView.setText(listViewItem.getUser_profile());
         Glide.with(recyclerView)
                 .load(listViewItem.user_profile_photo)
+                .circleCrop()
                 .into(iconImageView);
         return convertView;
     }

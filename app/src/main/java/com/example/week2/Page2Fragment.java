@@ -65,7 +65,6 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     static RecyclerAdapter adapter = null;
     static RecyclerView recyclerView = null;
 
-
     public Page2Fragment() {
         // Required empty public constructor
     }
@@ -130,7 +129,6 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
         String Url = "http://192.249.18.249:3000/getphoto/";
         NetworkTask networkTask = new NetworkTask(Url, null, "GET");
         networkTask.execute();
-
     }
 
     public static class NetworkTask extends AsyncTask<Void, Void, String> {
