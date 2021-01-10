@@ -55,20 +55,22 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                     list.setName(userObject.getString("name"));
                     list.setEmail(userObject.getString("email"));
                     list.setPhone(userObject.getString("phone"));
+                    list.setUser_profile((userObject.getString("profile")));
+                    String getImageurl = "http://192.249.18.249:3000/" + userObject.getString("profile_photo");
+                    list.setUser_profile_photo(getImageurl);
+
 
                     if(LogIn.user_name.equals(list.getName())) {
                         testlist.add(0, list);
-                        adapter.addFront(null, list.getName(), list.getPhone(), null, null);
+                        adapter.addFront(null, list.getName(), list.getPhone(), list.getEmail(), list.getUser_profile(), list.getUser_profile_photo());
                     }
                     else {
                         testlist.add(list);
-                        adapter.addItem(null, list.getName(), list.getPhone(), null, null);
+                        adapter.addItem(null, list.getName(), list.getPhone(), list.getEmail(), list.getUser_profile(), list.getUser_profile_photo());
                     }
 
                 }
-                adapter.notifyDataSetChanged();
-                System.out.println(listViewItemList);
-                System.out.println("mu!");
+                listview.setAdapter(adapter);
             }catch (JSONException e) {
                 e.printStackTrace();
             }

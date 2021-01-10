@@ -105,13 +105,7 @@ public class Page1Fragment extends Fragment {
         networkTask.execute();
 
         adapter.clear();
-        /*for(int i=0; i<listViewItem.size(); i++) {
-            if(! LogIn.user_name.equals(listViewItem.get(i).getTitle()))
-                adapter.addItem(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
-            else {
-                adapter.addFront(null, listViewItem.get(i).getTitle(), listViewItem.get(i).getDesc(), null, null);
-            }
-        }*/
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
