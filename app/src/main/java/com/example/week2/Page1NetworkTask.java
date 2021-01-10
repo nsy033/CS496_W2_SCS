@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page1Fragment.adapter;
-import static com.example.week2.Page1Fragment.listViewItem;
 import static com.example.week2.Page1Fragment.listview;
 
 public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
@@ -56,6 +55,10 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                     list.setEmail(userObject.getString("email"));
                     list.setPhone(userObject.getString("phone"));
 
+                    list.setPosting(userObject.getJSONArray("posting_list"));
+//                    list.setUser_profile(userObject.getString("profile"));
+//                    list.setUser_profile_photo(userObject.getString("profile_photo"));
+
                     if(LogIn.user_name.equals(list.getName())) {
                         testlist.add(0, list);
                         adapter.addFront(null, list.getName(), list.getPhone(), null, null);
@@ -64,7 +67,6 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                         testlist.add(list);
                         adapter.addItem(null, list.getName(), list.getPhone(), null, null);
                     }
-
                 }
                 adapter.notifyDataSetChanged();
                 System.out.println(listViewItemList);
@@ -72,7 +74,6 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
             }catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         else if(method == "POST"){
             if(s == "fail"){

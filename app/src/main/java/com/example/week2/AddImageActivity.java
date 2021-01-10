@@ -20,8 +20,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,9 +89,9 @@ import retrofit2.Retrofit;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.example.week2.MainActivity.testlist;
 
 public class AddImageActivity extends AppCompatActivity{
-
 
     ApiService apiService;
     Uri picUri;
@@ -102,7 +104,8 @@ public class AddImageActivity extends AppCompatActivity{
     Bitmap mBitmap;
     TextView textView;
     private String carry = "";
-
+    private ArrayList<String> items = new ArrayList<>();
+    private ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, items) ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +120,12 @@ public class AddImageActivity extends AppCompatActivity{
         if(description.length()>0) {
             carry = edt.getText().toString();
         }
+
+        for(int i=1;i<testlist.size(); i++) {
+            items.add(testlist.get(i).getName());
+        }
+//        ListView listview = (ListView) findViewById(R.id.choose_subjects_List) ;
+//        listview.setAdapter(adapter) ;
 
         askPermissions();
         initRetrofitClient();
@@ -147,18 +156,13 @@ public class AddImageActivity extends AppCompatActivity{
         });
     }
 
-
-
     private void askPermissions() {
         permissions.add(CAMERA);
         permissions.add(WRITE_EXTERNAL_STORAGE);
         permissions.add(READ_EXTERNAL_STORAGE);
         permissionsToRequest = findUnAskedPermissions(permissions);
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
             if (permissionsToRequest.size() > 0)
                 requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
@@ -169,7 +173,6 @@ public class AddImageActivity extends AppCompatActivity{
 
         apiService = new Retrofit.Builder().baseUrl("http://192.249.18.249:3000/").client(client).build().create(ApiService.class);
     }
-
 
     public Intent getPickImageChooserIntent() {
 
@@ -216,7 +219,6 @@ public class AddImageActivity extends AppCompatActivity{
         return chooserIntent;
     }
 
-
     private Uri getCaptureImageOutputUri() {
         Uri outputFileUri = null;
         File getImage = getExternalFilesDir("");
@@ -229,33 +231,24 @@ public class AddImageActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-
             ImageView imageView = findViewById(R.id.imageView);
 
             if (requestCode == IMAGE_RESULT) {
-
-
                 String filePath = getImageFilePath(data);
                 if (filePath != null) {
                     mBitmap = BitmapFactory.decodeFile(filePath);
                     imageView.setImageBitmap(mBitmap);
                 }
             }
-
         }
-
     }
-
 
     private String getImageFromFilePath(Intent data) {
         boolean isCamera = data == null || data.getData() == null;
-
         if (isCamera) return getCaptureImageOutputUri().getPath();
         else return getPathFromURI(data.getData());
-
     }
 
     public String getImageFilePath(Intent data) {
@@ -280,7 +273,6 @@ public class AddImageActivity extends AppCompatActivity{
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         // get the file url
         picUri = savedInstanceState.getParcelable("pic_uri");
     }
@@ -324,7 +316,6 @@ public class AddImageActivity extends AppCompatActivity{
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
-
             case ALL_PERMISSIONS_RESULT:
                 for (String perms : permissionsToRequest) {
                     if (!hasPermission(perms)) {
@@ -333,8 +324,6 @@ public class AddImageActivity extends AppCompatActivity{
                 }
 
                 if (permissionsRejected.size() > 0) {
-
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                             showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
@@ -347,12 +336,9 @@ public class AddImageActivity extends AppCompatActivity{
                             return;
                         }
                     }
-
                 }
-
                 break;
         }
-
     }
 
     private void multipartImageUpload() {
@@ -374,17 +360,14 @@ public class AddImageActivity extends AppCompatActivity{
             mBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
             byte[] bitmapdata = bos.toByteArray();
 
-
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
 
-
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), carry);
-
 
             Call<ResponseBody> req = apiService.postImage(body, name);
             req.enqueue(new Callback<ResponseBody>() {
