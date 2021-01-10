@@ -35,7 +35,7 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
             result = requestHttpURLConnection.request_get(url, values); // 해당 URL로 부터 결과물을 얻어온다.
         }
         else{
-            result = requestHttpURLConnection.request_post(url, values); // 해당 URL로 POST 보내기.
+            result = requestHttpURLConnection.request_post(url, null); // 해당 URL로 POST 보내기.
         }
         return result;
     }

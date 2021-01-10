@@ -13,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -41,14 +43,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static android.Manifest.permission.CAMERA;
@@ -87,6 +101,8 @@ public class EditProfile extends AppCompatActivity {
     static TextView d_desc;
     static ImageView d_imageView;
     static ImageView imageView;
+    static ArrayList<String> sendPostingList = new ArrayList<String>();
+    User tmp = new User();
 
     Bitmap mBitmap;
 
@@ -95,7 +111,7 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editprofile);
 
-        User tmp = listViewItemList.get(0);
+        tmp = listViewItemList.get(0);
 
         myphoto = (ImageView) findViewById(R.id.myphoto);
         Glide.with(getBaseContext())
@@ -122,6 +138,23 @@ public class EditProfile extends AppCompatActivity {
         EditText mail = (EditText) findViewById(R.id.editmail);
         mail.setText(tmp.getEmail());
         gv = (GridView) this.findViewById(R.id.myposting);
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tmp.setPhone(phone.getText().toString());
+                tmp.setEmail(phone.getText().toString());
+                tmp.setUser_profile(phone.getText().toString());
+                if (mBitmap != null) {
+                    int count = adapter.getCount();
+                    multipartImageUpload();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Bitmap is null. Try again", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         img2.clear();
         posting_list = listViewItemList.get(0).posting;
@@ -142,6 +175,19 @@ public class EditProfile extends AppCompatActivity {
         adapter2.notifyDataSetChanged();
 
         gv.setAdapter(adapter2);  // 커스텀 아답타를 GridView 에 적용
+    }
+
+    private void saveAndPost(User user) {
+
+        User values = new User();
+        values.setName(user.getName());
+        values.setUser_profile(user.getUser_profile());
+        values.setEmail(user.getEmail());
+        values.setPhone(user.getPhone());
+        values.setUser_profile_photo(user.getUser_profile_photo());
+        sendPostingList.addAll(str);
+        NetworkTask networkTask = new NetworkTask("http://192.249.18.249:3000/changeuser/", values,"POST", "", getApplicationContext());
+
     }
 
     public class MyGridAdapter extends BaseAdapter {
@@ -233,33 +279,32 @@ public class EditProfile extends AppCompatActivity {
 
         data = new Photo();
         String Url = "http://192.249.18.249:3000/getphoto/";
-        NetworkTask networkTask = new NetworkTask(Url, null, "GET", path, context, view);
+        NetworkTask networkTask = new NetworkTask(Url, null, "GET", path, context);
         networkTask.execute();
 
     }
 
     public static class NetworkTask extends AsyncTask<Void, Void, String> {
         private String url;
-        private ContentValues values;
+        private User values;
         private String method;
         private String path;
         private Context context;
         private View view;
 
-        public NetworkTask(String url, ContentValues values, String method, String path, Context context, View view) {
+        public NetworkTask(String url, User values, String method, String path, Context context) {
             this.url = url;
             this.values = values;
             this.method = method;
             this.path = path;
             this.context = context;
-            this.view = view;
         }
         @Override
         protected String doInBackground(Void... params) {
             String result; // 요청 결과를 저장할 변수.
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             if(method == "GET"){
-                result = requestHttpURLConnection.request_get(url, values); // 해당 URL로 부터 결과물을 얻어온다.
+                result = requestHttpURLConnection.request_get(url, null); // 해당 URL로 부터 결과물을 얻어온다.
             }
             else{
                 result = requestHttpURLConnection.request_post(url, values); // 해당 URL로 POST 보내기.
@@ -273,7 +318,6 @@ public class EditProfile extends AppCompatActivity {
             //System.out.println(s);
 
             if (method == "GET"){
-                ArrayList<Photo> tmp = new ArrayList<Photo>();
                 try{
                     //Json parsing
                     JSONArray jsonArray = new JSONArray(s);
@@ -356,10 +400,10 @@ public class EditProfile extends AppCompatActivity {
             }
             else if(method == "POST"){
                 if(s == "fail"){
-                    //Log.e("fail","fail....");
+
                 }
                 else{
-                    //Log.e("success",s);
+
                 }
             }
             dlg = builder.create();
@@ -552,6 +596,66 @@ public class EditProfile extends AppCompatActivity {
                     }
                 }
                 break;
+        }
+    }
+    private void multipartImageUpload() {
+        try {
+            File filesDir = getApplicationContext().getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            OutputStream os;
+            try {
+                os = new FileOutputStream(file);
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            }
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            String time = format.format(now);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("explain", "user_profile");
+            jsonObject.put("userList", tmp.getName());
+            jsonObject.put("time",time);
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), jsonObject.toString());
+
+            Call<ResponseBody> req = apiService.postImage(body, name);
+            req.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+        saveAndPost(tmp);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
