@@ -1,11 +1,14 @@
 package com.example.week2;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Photo {
-    ArrayList<String> userList;
+    JSONArray userList;
     String server_place;
-    String time;
+    Date time;
     String explain;
     int index;
 
@@ -15,7 +18,7 @@ public class Photo {
     public String getServer_place(){
         return server_place;
     }
-    public String getTime(){
+    public Date getTime(){
         return  time;
     }
     public String getExplain(){
@@ -23,9 +26,9 @@ public class Photo {
     }
     public int getIndex() { return index; }
 
-    public ArrayList<String> getUserList(){return userList;}
+    public JSONArray getUserList(){return userList;}
 
-    public void setUserList(ArrayList<String> userList) {
+    public void setUserList(JSONArray userList) {
         this.userList = userList;
     }
 
@@ -33,7 +36,7 @@ public class Photo {
         this.server_place = server_place;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
