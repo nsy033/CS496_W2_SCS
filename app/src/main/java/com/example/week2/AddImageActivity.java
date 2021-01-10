@@ -67,6 +67,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -365,21 +368,23 @@ public class AddImageActivity extends AppCompatActivity{
             fos.flush();
             fos.close();
 
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("explain", carry);
+            jsonObject.put("userList", "여기에 userList");
+            jsonObject.put("time","여기에 시간");
+
+
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), carry);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), jsonObject.toString());
 
             Call<ResponseBody> req = apiService.postImage(body, name);
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                    if (response.code() == 200) {
-                        textView.setText("Uploaded Successfully!");
-                        textView.setTextColor(Color.BLUE);
-                    }
-
                     Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+
                 }
 
                 @Override
@@ -396,24 +401,11 @@ public class AddImageActivity extends AppCompatActivity{
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-    /*@Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fab:
-                startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
-                break;
 
-            case R.id.fabUpload:
-                if (mBitmap != null)
-                    multipartImageUpload();
-                else {
-                    Toast.makeText(getApplicationContext(), "Bitmap is null. Try again", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }*/
 }
 

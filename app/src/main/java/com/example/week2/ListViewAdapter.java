@@ -53,8 +53,10 @@ public class ListViewAdapter extends BaseAdapter {
         User listViewItem = listViewItemList.get(position);
 
         nameTextView.setText(listViewItem.getName());
-        numberTextView.setText(listViewItem.getPhone());
-        Glide.with(recyclerView).load(listViewItem.user_profile_photo).into(iconImageView);
+        numberTextView.setText(listViewItem.getUser_profile());
+        Glide.with(recyclerView)
+                .load(listViewItem.user_profile_photo)
+                .into(iconImageView);
         return convertView;
     }
 
@@ -68,7 +70,7 @@ public class ListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position) ;
     }
 
-    public void addItem(Bitmap icon, String title, String desc, String mail, String profile) {
+    public void addItem(Bitmap icon, String title, String desc, String mail, String profile, String profile_photo) {
         User item = new User();
 
 
@@ -76,11 +78,12 @@ public class ListViewAdapter extends BaseAdapter {
         item.setPhone(desc);
         item.setEmail(mail);
         item.setUser_profile(profile);
+        item.setUser_profile_photo(profile_photo);
 
         listViewItemList.add(item);
     }
 
-    public void addFront(Bitmap icon, String title, String desc, String mail, String profile) {
+    public void addFront(Bitmap icon, String title, String desc, String mail, String profile, String profile_photo) {
 
         User item = new User();
 
@@ -89,6 +92,7 @@ public class ListViewAdapter extends BaseAdapter {
         item.setPhone(desc);
         item.setEmail(mail);
         item.setUser_profile(profile);
+        item.setUser_profile_photo(profile_photo);
 
         listViewItemList.add(0, item);
     }

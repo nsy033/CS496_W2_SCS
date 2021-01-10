@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -51,7 +52,7 @@ import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.RecyclerAdapter.listData;
 import static java.sql.DriverManager.println;
 
-public class Page2Fragment extends Fragment {
+public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -121,10 +122,17 @@ public class Page2Fragment extends Fragment {
             }
         });
 
-
-
         return view;
     }
+
+    @Override
+    public void onRefresh() {
+        String Url = "http://192.249.18.249:3000/getphoto/";
+        NetworkTask networkTask = new NetworkTask(Url, null, "GET");
+        networkTask.execute();
+
+    }
+
     public static class NetworkTask extends AsyncTask<Void, Void, String> {
         private String url;
         private ContentValues values;
