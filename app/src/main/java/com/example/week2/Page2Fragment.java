@@ -37,11 +37,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.week2.MainActivity.testlist;
+import static com.example.week2.RecyclerAdapter.listData;
 import static java.sql.DriverManager.println;
 
 public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -96,6 +104,7 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
         NetworkTask networkTask = new NetworkTask(Url, null, "GET");
         networkTask.execute();
         View view = inflater.inflate(R.layout.page2fragment, null);
+
         Intent intent = new Intent(getActivity(), AddImageActivity.class);
         recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -152,31 +161,48 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
             super.onPostExecute(s);
             String getImageurl = "";
             //System.out.println(s);
+
             if (method == "GET"){
+                ArrayList<Photo> tmp = new ArrayList<Photo>();
                 try{
                     //Json parsing
-
                     JSONArray jsonArray = new JSONArray(s);
-
                     for(int i = 0; i< jsonArray.length();i++){
                         JSONObject photoObject = jsonArray.getJSONObject(i);
                         Photo posting = new Photo();
+
                         posting.setExplain(photoObject.getString("explain"));
-                        ArrayList<String> userList = new ArrayList<String>();
+
+                        JSONArray userList = new JSONArray();
                         posting.setUserList(userList);
+
                         getImageurl = "http://192.249.18.249:3000/" + photoObject.getString("server_place");
                         posting.setServer_place(getImageurl);
 
-                        adapter.addItem(posting);
+                        String from = photoObject.getString("time");
+                        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date time = transFormat.parse(from);
+                        posting.setTime(time);
 
+                        posting.setUserList(photoObject.getJSONArray("userList"));
+                        tmp.add(posting);
+                        //adapter.addItem(posting);
                     }
                 }catch (JSONException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
 
+                Collections.sort(tmp, new Comparator() {
+                    @Override
+                    public int compare(Object o1, Object o2) {
+                        return ((Photo) o2).getTime().compareTo(((Photo) o1).getTime());
+                    }
+                });
+                listData.clear();
+                listData.addAll(tmp);
                 recyclerView.setAdapter(adapter);
-
-
             }
             else if(method == "POST"){
                 if(s == "fail"){

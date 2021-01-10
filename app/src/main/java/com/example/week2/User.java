@@ -1,5 +1,7 @@
 package com.example.week2;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
 public class User {
@@ -8,7 +10,7 @@ public class User {
     String email;
     String user_profile;
     String user_profile_photo;
-    ArrayList<String> posting = new ArrayList<String>();
+    JSONArray posting = new JSONArray();
 
     public User(){
     }
@@ -25,7 +27,7 @@ public class User {
     public String getUser_profile(){
         return user_profile;
     }
-    public ArrayList<String> getPosting(){
+    public JSONArray getPosting(){
         return posting;
     }
     public String getUser_profile_photo() {return user_profile_photo;}
@@ -40,6 +42,6 @@ public class User {
     public void setEmail(String email) {this.email = email;}
     public void setUser_profile(String user_profile) {this.user_profile = user_profile;}
     public void setUser_profile_photo(String user_profile_photo) {this.user_profile_photo = user_profile_photo;}
-    public void setPosting(ArrayList<String> posting) {this.posting = posting;}
+    public void setPosting(JSONArray posting) {this.posting = posting;}
 
 }

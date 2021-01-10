@@ -12,14 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 import static com.example.week2.Page2Fragment.recyclerView;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
     // adapter에 들어갈 list 입니다.
-    private ArrayList<Photo> listData = new ArrayList<>();
+    //private ArrayList<Photo> listData = new ArrayList<>();
+    public static ArrayList<Photo> listData = new ArrayList<>();
 
     @NonNull
     @Override
@@ -51,22 +58,41 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     // 여기서 subView를 setting 해줍니다.
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textView1;
-        private TextView textView2;
+        private TextView names;
+        private TextView date;
+        private TextView desc;
         private ImageView imageView;
-
 
         ItemViewHolder(View itemView) {
             super(itemView);
 
-            textView1 = itemView.findViewById(R.id.textView1);
-            textView2 = itemView.findViewById(R.id.textView2);
+            names = itemView.findViewById(R.id.names);
+            date = itemView.findViewById(R.id.posted_date);
+            desc = itemView.findViewById(R.id.textView2);
             imageView = itemView.findViewById(R.id.imageView);
         }
 
         void onBind(Photo data) {
-            textView1.setText(data.getTime());
-            textView2.setText(data.getExplain());
+
+            JSONArray ja = data.getUserList();
+            String namestr = "";
+            for(int i=0; i<ja.length(); i++) {
+                try {
+                    namestr = namestr + ja.getString(i);
+                    if(i<ja.length()-1) namestr = namestr + " ";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            names.setText(namestr);
+
+            Date from = data.getTime();
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String to = transFormat.format(from);
+            date.setText(to);
+
+            desc.setText(data.getExplain());
             Glide.with(recyclerView).load(data.getServer_place()).into(this.imageView);
 
         }

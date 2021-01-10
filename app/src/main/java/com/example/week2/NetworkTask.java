@@ -51,7 +51,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                     JSONObject photoObject = jsonArray.getJSONObject(i);
                     Photo posting = new Photo();
                     posting.setExplain(photoObject.getString("explain"));
-                    ArrayList<String> userList = new ArrayList<String>();
+                    JSONArray userList = new JSONArray();
                     posting.setUserList(userList);
                     recyclerViewItems.add(posting);
                     adapter.addItem(posting);

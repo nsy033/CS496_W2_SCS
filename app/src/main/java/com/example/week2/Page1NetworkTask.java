@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page1Fragment.adapter;
-import static com.example.week2.Page1Fragment.listViewItem;
 import static com.example.week2.Page1Fragment.listview;
 
 public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
@@ -60,6 +59,10 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                     list.setUser_profile_photo(getImageurl);
 
 
+                    list.setPosting(userObject.getJSONArray("posting_list"));
+//                    list.setUser_profile(userObject.getString("profile"));
+//                    list.setUser_profile_photo(userObject.getString("profile_photo"));
+
                     if(LogIn.user_name.equals(list.getName())) {
                         testlist.add(0, list);
                         adapter.addFront(null, list.getName(), list.getPhone(), list.getEmail(), list.getUser_profile(), list.getUser_profile_photo());
@@ -68,13 +71,11 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                         testlist.add(list);
                         adapter.addItem(null, list.getName(), list.getPhone(), list.getEmail(), list.getUser_profile(), list.getUser_profile_photo());
                     }
-
                 }
                 listview.setAdapter(adapter);
             }catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         else if(method == "POST"){
             if(s == "fail"){
