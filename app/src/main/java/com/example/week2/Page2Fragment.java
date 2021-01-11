@@ -64,6 +64,7 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private String mParam2;
     static RecyclerAdapter adapter = null;
     static RecyclerView recyclerView = null;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public Page2Fragment() {
         // Required empty public constructor
@@ -110,6 +111,8 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
         adapter = new RecyclerAdapter();
 
         ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
@@ -126,9 +129,10 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onRefresh() {
-        String Url = "http://192.249.18.249:3000/getphoto/";
+        String Url = "http://192.249.18.249:3000/getfirstphoto/";
         NetworkTask networkTask = new NetworkTask(Url, null, "GET");
         networkTask.execute();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public static class NetworkTask extends AsyncTask<Void, Void, String> {

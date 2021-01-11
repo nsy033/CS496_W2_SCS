@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -101,6 +102,7 @@ public class EditProfile extends AppCompatActivity {
     static TextView d_desc;
     static ImageView d_imageView;
     static ImageView imageView;
+    static String sendingPath;
     static ArrayList<String> sendPostingList = new ArrayList<String>();
     User tmp = new User();
 
@@ -119,7 +121,7 @@ public class EditProfile extends AppCompatActivity {
                 .load(tmp.getUser_profile_photo())
                 .circleCrop()
                 .into(myphoto);
-
+        initRetrofitClient();
         Button btn = (Button) findViewById(R.id.profile_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,16 +145,16 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tmp.setPhone(phone.getText().toString());
-                tmp.setEmail(phone.getText().toString());
-                tmp.setUser_profile(phone.getText().toString());
-                if (mBitmap != null) {
+                tmp.setEmail(mail.getText().toString());
+                tmp.setUser_profile(profile.getText().toString());
+                /*if (mBitmap != null) {
                     int count = adapter.getCount();
                     multipartImageUpload();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Bitmap is null. Try again", Toast.LENGTH_SHORT).show();
-                }
-
+                }*/
+                multipartImageUpload();
             }
         });
 
@@ -186,7 +188,9 @@ public class EditProfile extends AppCompatActivity {
         values.setPhone(user.getPhone());
         values.setUser_profile_photo(user.getUser_profile_photo());
         sendPostingList.addAll(str);
-        NetworkTask networkTask = new NetworkTask("http://192.249.18.249:3000/changeuser/", values,"POST", "", getApplicationContext());
+
+        NetworkTask networkTask = new NetworkTask("http://192.249.18.249:3000/changeuser/", values,"POST", sendingPath, getApplicationContext());
+        networkTask.execute();
 
     }
 
@@ -427,6 +431,7 @@ public class EditProfile extends AppCompatActivity {
     private void initRetrofitClient() {
         OkHttpClient client = new OkHttpClient.Builder().build();
         apiService = new Retrofit.Builder().baseUrl("http://192.249.18.249:3000/").client(client).build().create(ApiService.class);
+
     }
 
     public Intent getPickImageChooserIntent() {
@@ -634,12 +639,13 @@ public class EditProfile extends AppCompatActivity {
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), jsonObject.toString());
 
+
             Call<ResponseBody> req = apiService.postImage(body, name);
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
-
+                    sendingPath = response.toString().split(":3000/")[1];
                 }
 
                 @Override
@@ -648,7 +654,7 @@ public class EditProfile extends AppCompatActivity {
                     t.printStackTrace();
                 }
             });
-        saveAndPost(tmp);
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -657,5 +663,15 @@ public class EditProfile extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                saveAndPost(tmp);
+            }
+        }, 10000);
+
+
+
     }
 }

@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.example.week2.EditProfile.sendPostingList;
+import static com.example.week2.EditProfile.sendingPath;
 
 public class RequestHttpURLConnection {
     public String request_get(String _url, ContentValues _params){
@@ -56,13 +59,20 @@ public class RequestHttpURLConnection {
             jsonObject.accumulate("phoneNumber",user.getPhone());
             jsonObject.accumulate("email",user.getEmail());
             jsonObject.accumulate("profile",user.getUser_profile());
-            jsonObject.accumulate("posting_list",sendPostingList);
-            jsonObject.accumulate("profile_photo",user.getUser_profile_photo());
 
+            String path = sendingPath.substring(0, sendingPath.length()-1);
+            sendPostingList.add(path);
+            jsonObject.accumulate("posting_list",sendPostingList);
+            jsonObject.accumulate("profile_photo",path);
             json = jsonObject.toString();
             OutputStream os = connection.getOutputStream();
-            os.write(json.getBytes("euc-kr"));
+            os.write(json.getBytes("UTF-8"));
             os.flush();
+
+           /* PrintWriter pw = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), "EUC-KR"));
+            pw.write(json);
+            pw.flush();*/
+
             // receive response as inputStream
             try{
                 InputStream is = connection.getInputStream();

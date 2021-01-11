@@ -64,7 +64,7 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
 
                     if(LogIn.user_name.equals(list.getName())) {
                         mine  = list;
-                        //testlist.add(0, list);
+                        testlist.add(0, list);
                         //adapter.addFront(null, list.getName(), list.getPhone(), list.getEmail(), list.getUser_profile(), list.getUser_profile_photo());
                     }
                     else {
@@ -78,7 +78,7 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                         }
                     });
                 }
-                testlist.add(0, mine);
+                //testlist.add(0, mine);
                 listViewItemList.addAll(testlist);
                 listview.setAdapter(adapter);
             }catch (JSONException e) {
