@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
     <fragment
@@ -37,11 +37,28 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="13dp" />
 
-    <GridView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:id="@+id/cdimages"></GridView>
+        android:scrollbars="none"
+        android:id="@+id/title_horizontalScrollView"
+        android:layout_margin="1dp"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <GridView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cdimages"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
 <!--
     <view

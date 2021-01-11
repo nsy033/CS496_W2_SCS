@@ -101,9 +101,9 @@ public class Page1Fragment extends Fragment {
         listview = (ListView) view.findViewById(R.id.listview);
         adapter.clear();
         String Url = "http://192.249.18.249:3000/getuser/";
+
         Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
         networkTask.execute();
-
         adapter.clear();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

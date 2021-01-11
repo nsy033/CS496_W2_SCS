@@ -2,28 +2,16 @@ package com.example.week2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -93,6 +81,10 @@ public class Page3Fragment extends Fragment {
         song2.setKeys("DvC3MdUzjmM");
         song2.setTime(date2);
         song2.setExplain("뉴홉클");
+        playLists.add(song2);
+        playLists.add(song2);
+        playLists.add(song2);
+        playLists.add(song2);
         playLists.add(song2);
 
         WebView view = rootView.findViewById(R.id.home_webview);
