@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:paddingTop="47dp"
     android:orientation="vertical">
 
     <ListView
@@ -13,6 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider = "#EFEEEA"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="47dp"
         android:textFilterEnabled="true"
         android:dividerHeight="2px">
     </ListView>

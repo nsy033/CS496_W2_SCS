@@ -26,7 +26,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="#655B3E"
-        android:elevation = "4dp"
         app:tabTextColor="#9C9788">
 
         <com.google.android.material.tabs.TabItem
