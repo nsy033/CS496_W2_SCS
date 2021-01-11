@@ -75,6 +75,7 @@
             android:layout_marginRight="25dp"
             android:gravity="left"
             android:textColor="#3E3B3B"
+            android:focusable="true"
             android:textSize="15dp"></EditText>
 
     </LinearLayout>
@@ -100,6 +101,7 @@
             android:layout_marginRight="25dp"
             android:gravity="left"
             android:textColor="#3E3B3B"
+            android:focusable="true"
             android:textSize="15dp"></EditText>
     </LinearLayout>
 
@@ -125,6 +127,7 @@
             android:layout_marginRight="25dp"
             android:gravity="left"
             android:textColor="#3E3B3B"
+            android:focusable="true"
             android:textSize="15dp"></EditText>
 
     </LinearLayout>
