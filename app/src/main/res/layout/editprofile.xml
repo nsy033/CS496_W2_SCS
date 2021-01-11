@@ -139,4 +139,14 @@
         android:layout_margin="15dp"
         android:numColumns="4"></GridView>
 
+    <Button
+        android:id = "@+id/saveButton"
+        android:gravity="bottom"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        android:src="@drawable/ic_launcher_foreground">
+
+
+    </Button>
+
 </LinearLayout>

@@ -7,9 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.example.week2.EditProfile.sendPostingList;
+import static com.example.week2.EditProfile.sendingPath;
+
 public class RequestHttpURLConnection {
     public String request_get(String _url, ContentValues _params){
         try {
@@ -34,7 +40,7 @@ public class RequestHttpURLConnection {
         }
         return null;
     }
-    public String request_post(String _url, ContentValues _params){
+    public String request_post(String _url, User user){
         String result = null;
         try {
             URL url = new URL(_url);
@@ -49,13 +55,24 @@ public class RequestHttpURLConnection {
             String json= "";
             //build jsonObject
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("name","testhihi!");
-            jsonObject.accumulate("phoneNumber","010-6665-8728");
-            jsonObject.accumulate("email","sampl@e.com");
+            jsonObject.accumulate("name",user.getName());
+            jsonObject.accumulate("phoneNumber",user.getPhone());
+            jsonObject.accumulate("email",user.getEmail());
+            jsonObject.accumulate("profile",user.getUser_profile());
+
+            String path = sendingPath.substring(0, sendingPath.length()-1);
+            sendPostingList.add(path);
+            jsonObject.accumulate("posting_list",sendPostingList);
+            jsonObject.accumulate("profile_photo",path);
             json = jsonObject.toString();
             OutputStream os = connection.getOutputStream();
-            os.write(json.getBytes("euc-kr"));
+            os.write(json.getBytes("UTF-8"));
             os.flush();
+
+           /* PrintWriter pw = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), "EUC-KR"));
+            pw.write(json);
+            pw.flush();*/
+
             // receive response as inputStream
             try{
                 InputStream is = connection.getInputStream();

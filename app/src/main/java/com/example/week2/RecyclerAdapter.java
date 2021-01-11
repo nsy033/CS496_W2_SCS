@@ -82,10 +82,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
             JSONArray ja = data.getUserList();
             String namestr = "";
-            for(int i=1; i<ja.length(); i++) {
+            for (int i = 1; i < ja.length(); i++) {
                 try {
                     namestr = namestr + ja.getString(i);
-                    if(i<ja.length()-1) namestr = namestr + " ";
+                    if (i < ja.length() - 1) namestr = namestr + " ";
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -96,7 +96,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(namestr.length() > 0) tagged.setText(namestr);
+            if (namestr.length() > 0) tagged.setText(namestr);
             else tagged.setText("None");
 
             Date from = data.getTime();
@@ -115,9 +115,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 e.printStackTrace();
             }
             String path = "";
-            for(int i=0; i<testlist.size(); i++){
+            for (int i = 0; i < testlist.size(); i++) {
                 try {
-                    if(testlist.get(i).getName().equals(ja.getString(0))) {
+                    if (testlist.get(i).getName().equals(ja.getString(0))) {
                         path = testlist.get(i).getUser_profile_photo();
                         break;
                     }
