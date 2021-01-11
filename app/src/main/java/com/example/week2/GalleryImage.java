@@ -1,7 +1,6 @@
 package com.example.week2;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 public class GalleryImage {
     private String path;
