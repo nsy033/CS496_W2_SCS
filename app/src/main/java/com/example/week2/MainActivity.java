@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    static ArrayList<User> listViewItem = new ArrayList<User>();
     public static String test= "";
     public static ArrayList<User> testlist = new ArrayList<User>();
     Bitmap user = null;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String Url = "http://192.249.18.249:3000/getuser/";
+        Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
+        networkTask.execute();
 
         setContentView(R.layout.activity_main);
 

@@ -35,6 +35,8 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
         }
         else{
             result = requestHttpURLConnection.request_post(url, null); // 해당 URL로 POST 보내기.
+
+
         }
         return result;
     }

@@ -52,13 +52,12 @@ public class Page1Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    static int ChangeFlag = 0;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     MenuItem mSearch;
     static ListView listview = null;
-    static ArrayList<User> listViewItem = new ArrayList<User>();
     static ListViewAdapter adapter = new ListViewAdapter();
 
     public Page1Fragment() {
@@ -95,16 +94,18 @@ public class Page1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.page1fragment, null);
         setHasOptionsMenu(true);
 
         listview = (ListView) view.findViewById(R.id.listview);
-        adapter.clear();
-        String Url = "http://192.249.18.249:3000/getuser/";
 
-        Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
-        networkTask.execute();
-        adapter.clear();
+
+
+
+        if(ChangeFlag == 0){
+
+        }
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

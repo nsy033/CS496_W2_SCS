@@ -106,7 +106,7 @@ public class RequestHttpURLConnection {
         }
         return result;
     }
-    public String request_post_music(String _url, Music music){
+    public String request_post_music(String _url, PlayList music){
         String result = null;
         try {
             URL url = new URL(_url);
@@ -121,15 +121,10 @@ public class RequestHttpURLConnection {
             String json= "";
             //build jsonObject
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("name",user.getName());
-            jsonObject.accumulate("phoneNumber",user.getPhone());
-            jsonObject.accumulate("email",user.getEmail());
-            jsonObject.accumulate("profile",user.getUser_profile());
-
-            String path = sendingPath.substring(0, sendingPath.length()-1);
-            sendPostingList.add(path);
-            jsonObject.accumulate("posting_list",sendPostingList);
-            jsonObject.accumulate("profile_photo",path);
+            jsonObject.accumulate("key",music.getKeys());
+            jsonObject.accumulate("user",music.getUser());
+            jsonObject.accumulate("explain",music.getExplain());
+            jsonObject.accumulate("time",music.getTime());
             json = jsonObject.toString();
             OutputStream os = connection.getOutputStream();
             os.write(json.getBytes("UTF-8"));

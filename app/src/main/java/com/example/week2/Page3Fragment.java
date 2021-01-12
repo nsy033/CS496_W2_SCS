@@ -76,22 +76,25 @@ public class Page3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        Page3NetworkTask page3NetworkTask = new Page3NetworkTask("", "여기에 user", "여기에 explain", "여기에 time", "GET");
-        page3NetworkTask.execute();
+
+
         String url = "http://www.youtube.com";
 
         PlayList song = new PlayList();
         Date date = new Date();
         song.setKeys("Ib5ec71QIc8");
-        song.setTime(date);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(date);
+        song.setTime(time);
         song.setExplain("Ed Sheeran - Afterglow");
         playLists.add(song);
 
         PlayList song2 = new PlayList();
         Date date2 = new Date();
         song2.setKeys("DvC3MdUzjmM");
-        song2.setTime(date2);
+        song2.setTime(time);
         song2.setExplain("뉴홉클");
+        playLists.add(song2);
 
         WebView view = rootView.findViewById(R.id.home_webview);
         view.setWebViewClient(new WebViewClient());
@@ -121,61 +124,66 @@ public class Page3Fragment extends Fragment {
             public void onClick(View v) {
                 final LinearLayout linear = (LinearLayout) View.inflate(getActivity(), R.layout.new_playlist_dialog, null);
                 AlertDialog.Builder adb = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
-                adb.setView(linear)
-                        .setTitle("Add new song")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EditText edt = (EditText) linear.findViewById(R.id.et1);
-                                String desc = edt.getText().toString();
 
-                                String str = view.getUrl();
-                                String key = "";
-                                int index = 0;
-                                boolean flag = true;
-                                for(int i=str.length()-1; i>=0; i--) {
-                                    if(str.charAt(i)=='=' && str.charAt(i-1)=='v') {
-                                        index = i+1;
-                                        flag = false;
+                adb.setView(linear);
+                adb.setTitle("Add new song");
+                adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText edt = (EditText) linear.findViewById(R.id.et1);
+                        String desc = edt.getText().toString();
+
+                        String str = view.getUrl();
+                        String key = "";
+                        int index = 0;
+                        boolean flag = true;
+                        for (int i = str.length() - 1; i >= 0; i--) {
+                            if (str.charAt(i) == '=' && str.charAt(i - 1) == 'v') {
+                                index = i + 1;
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (flag)
+                            Toast.makeText(getContext(), "Wrong page", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (!str.contains("&t=")) {
+                                key = key + str.substring(index);
+                                System.out.println(key);
+                            } else {
+                                int end = 0;
+                                for (int j = str.length() - 1; j >= 0; j--) {
+                                    if (str.charAt(j) == '&' && str.charAt(j + 1) == 't') {
+                                        end = j - 1;
                                         break;
                                     }
                                 }
-                                if(flag) Toast.makeText(getContext(), "Wrong page", Toast.LENGTH_SHORT).show();
-                                else {
-                                    if (!str.contains("&t=")) {
-                                        key = key + str.substring(index);
-                                        System.out.println(key);
-                                    } else {
-                                        int end = 0;
-                                        for (int j = str.length() - 1; j >= 0; j--) {
-                                            if (str.charAt(j) == '&' && str.charAt(j + 1) == 't') {
-                                                end = j - 1;
-                                                break;
-                                            }
-                                        }
-                                        key = str.substring(index, end);
-                                    }
-
-                                    Date date = new Date();
-                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    String time = format.format(date);
-
-                                    String name = user_name;
-
-                                    //key, desc, time, name
-                                    System.out.println(key + " " + desc + " " + time + " " + name);
-                                  
-                                    Page3NetworkTask page3NetworkTask = new Page3NetworkTask(key, user_name, "여기에 explain", "여기에 time", "POST");
-                                    page3NetworkTask.execute();
-                                }
+                                key = str.substring(index, end);
                             }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+
+                            Date date = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String time = format.format(date);
+
+                            String name = user_name;
+
+                            //key, desc, time, name
+                            System.out.println(key + " " + desc + " " + time + " " + name);
+                            /*if(Youtube.size!=0){
+                                Youtube.size = Youtube.size +1;
+                                Youtube.gridView.setNumColumns(Youtube.size);
+                            }*/
+
+                            Page3NetworkTask page3NetworkTask = new Page3NetworkTask(key, user_name, desc, time, "POST");
+                            page3NetworkTask.execute();
+                        }
+                    }
+                }); adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 AlertDialog dialog = adb.create();
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
@@ -194,6 +202,8 @@ public class Page3Fragment extends Fragment {
         showPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Page3NetworkTask page3NetworkTask = new Page3NetworkTask("", "여기에 user", "여기에 explain", "여기에 time", "GET");
+                page3NetworkTask.execute();
                 Intent intent = new Intent(getActivity(), Youtube.class);
                 startActivity(intent);
             }
