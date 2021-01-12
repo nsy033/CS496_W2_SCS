@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -42,9 +44,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
-import static com.example.week2.ListViewAdapter.listViewItemList;
+import static com.example.week2.MainActivity.listViewItemList;
 import static com.example.week2.MainActivity.test;
 import static com.example.week2.MainActivity.testlist;
+import static com.example.week2.Page2Fragment.recyclerView;
 
 public class Page1Fragment extends Fragment {
 
@@ -52,12 +55,13 @@ public class Page1Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    static int ChangeFlag = 0;
+    static int ChangeFlag = 1;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     MenuItem mSearch;
     static ListView listview = null;
+    static ArrayList<User> listViewItem = new ArrayList<User>();
     static ListViewAdapter adapter = new ListViewAdapter();
 
     public Page1Fragment() {
@@ -100,12 +104,26 @@ public class Page1Fragment extends Fragment {
 
         listview = (ListView) view.findViewById(R.id.listview);
 
+        String Url = "http://192.249.18.249:3000/getuser/";
 
 
-
-        if(ChangeFlag == 0){
-
+        if(ChangeFlag == 1){
+            Page1NetworkTask networkTask = new Page1NetworkTask(Url, null, "GET");
+            networkTask.execute();
+            ChangeFlag = 0;
         }
+        else{
+            User tmpuser = listViewItemList.get(0);
+            adapter.setFront(null,tmpuser.getName(), tmpuser.getPhone(), tmpuser.getEmail(),tmpuser.getUser_profile(), tmpuser.getUser_profile_photo() );
+
+            Glide.with(recyclerView)
+                    .load(listViewItemList.get(0).user_profile_photo)
+                    .circleCrop()
+                    .into(adapter.iconImageView);
+            adapter.notifyDataSetChanged();
+            listview.setAdapter(adapter);
+        }
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

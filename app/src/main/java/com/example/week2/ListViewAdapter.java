@@ -14,12 +14,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import static com.example.week2.MainActivity.listViewItemList;
 import static com.example.week2.Page2Fragment.recyclerView;
 import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class ListViewAdapter extends BaseAdapter {
-    public static ArrayList<User> listViewItemList = new ArrayList<User>() ;
+
     Filter listFilter;
+    static ImageView iconImageView;
 
     public ListViewAdapter() {}
 
@@ -38,7 +40,7 @@ public class ListViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listview_item, parent, false);
         }
 
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView1);
+        iconImageView = (ImageView) convertView.findViewById(R.id.imageView1);
         TextView nameTextView = (TextView) convertView.findViewById(R.id.textView1);
         TextView numberTextView = (TextView) convertView.findViewById(R.id.textView2);
 
@@ -65,14 +67,11 @@ public class ListViewAdapter extends BaseAdapter {
 
     public void addItem(Bitmap icon, String title, String desc, String mail, String profile, String profile_photo) {
         User item = new User();
-
-
         item.setName(title);
         item.setPhone(desc);
         item.setEmail(mail);
         item.setUser_profile(profile);
         item.setUser_profile_photo(profile_photo);
-
         listViewItemList.add(item);
     }
 
@@ -88,6 +87,20 @@ public class ListViewAdapter extends BaseAdapter {
         item.setUser_profile_photo(profile_photo);
 
         listViewItemList.add(0, item);
+    }
+
+    public void setFront(Bitmap icon, String title, String desc, String mail, String profile, String profile_photo) {
+
+        User item = new User();
+
+
+        item.setName(title);
+        item.setPhone(desc);
+        item.setEmail(mail);
+        item.setUser_profile(profile);
+        item.setUser_profile_photo(profile_photo);
+
+        listViewItemList.set(0, item);
     }
 
     public void clear(){

@@ -65,6 +65,8 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     static RecyclerAdapter adapter = null;
     static RecyclerView recyclerView = null;
     SwipeRefreshLayout swipeRefreshLayout;
+    private int ChangeFlag = 1;
+
 
     public Page2Fragment() {
         // Required empty public constructor
@@ -101,8 +103,13 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         String Url = "http://192.249.18.249:3000/getphoto/";
-        NetworkTask networkTask = new NetworkTask(Url, null, "GET");
-        networkTask.execute();
+        adapter = new RecyclerAdapter();
+        if(ChangeFlag == 1){
+            NetworkTask networkTask = new NetworkTask(Url, null, "GET");
+            networkTask.execute();
+            ChangeFlag = 0;
+        }
+
         View view = inflater.inflate(R.layout.page2fragment, null);
 
         Intent intent = new Intent(getActivity(), AddImageActivity.class);
@@ -113,7 +120,7 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        adapter = new RecyclerAdapter();
+
 
         ImageButton imgAddButton =  view.findViewById(R.id.addImageButton);
         imgAddButton.setOnClickListener(new View.OnClickListener(){
@@ -130,7 +137,7 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onRefresh() {
         String Url = "http://192.249.18.249:3000/getfirstphoto/";
-        NetworkTask networkTask = new NetworkTask(Url, null, "GET");
+        NetworkTask networkTask = new NetworkTask(Url, null, "FIRST");
         networkTask.execute();
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -154,7 +161,7 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 result = requestHttpURLConnection.request_get(url, values); // 해당 URL로 부터 결과물을 얻어온다.
             }
             else{
-                result = requestHttpURLConnection.request_post(url, null); // 해당 URL로 POST 보내기.
+                result = requestHttpURLConnection.request_get_firstphoto(url, null); // 해당 URL로 POST 보내기.
             }
             return result;
         }
@@ -204,15 +211,46 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 });
                 listData.clear();
                 listData.addAll(tmp);
+                MainActivity.recyclerViewItems.addAll(tmp);
                 recyclerView.setAdapter(adapter);
             }
-            else if(method == "POST"){
-                if(s == "fail"){
-                    //Log.e("fail","fail....");
+            else if(method == "FIRST"){
+                ArrayList<Photo> tmp = new ArrayList<Photo>();
+                try{
+                    //Json parsing
+
+                    JSONObject photoObject = new JSONObject(s);
+                    Photo posting = new Photo();
+
+                    posting.setExplain(photoObject.getString("explain"));
+
+                    JSONArray userList = new JSONArray();
+                    posting.setUserList(userList);
+
+                    getImageurl = "http://192.249.18.249:3000/" + photoObject.getString("server_place");
+                    posting.setServer_place(getImageurl);
+
+                    String from = photoObject.getString("time");
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date time = transFormat.parse(from);
+                    posting.setTime(time);
+
+                    posting.setUserList(photoObject.getJSONArray("userList"));
+                    tmp.add(posting);
+
+                    adapter.addItem(posting);
+                    //adapter.addItem(posting);
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    //Log.e("success",s);
-                }
+                listData.add(0,tmp.get(0));
+                adapter.notifyDataSetChanged();
+                MainActivity.recyclerViewItems.clear();
+                MainActivity.recyclerViewItems.addAll(listData);
+                recyclerView.setAdapter(adapter);
             }
         }
     }
