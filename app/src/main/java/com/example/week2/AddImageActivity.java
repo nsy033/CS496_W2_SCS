@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -164,6 +165,7 @@ public class AddImageActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (mBitmap != null) {
                     SparseBooleanArray checkedItems = listView_addimage.getCheckedItemPositions();
+
                     int count = adapter.getCount();
                     user_list = new JSONArray();
                     user_list.put(user_name);

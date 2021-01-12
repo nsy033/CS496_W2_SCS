@@ -19,6 +19,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,14 +91,14 @@ public class Page3Fragment extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = format.format(date);
         song.setTime(time);
-        song.setExplain("Ed Sheeran - Afterglow");
+        song.setExplain("ㅎㅇ/Ed Sheeran - Afterglow");
         playLists.add(song);
 
         PlayList song2 = new PlayList();
         Date date2 = new Date();
         song2.setKeys("DvC3MdUzjmM");
         song2.setTime(time);
-        song2.setExplain("뉴홉클");
+        song2.setExplain("ㅎㅎ/뉴홉클");
         playLists.add(song2);
 
         WebView view = rootView.findViewById(R.id.home_webview);
@@ -131,8 +135,11 @@ public class Page3Fragment extends Fragment {
                 adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText edt = (EditText) linear.findViewById(R.id.et1);
+                        EditText edt2 = (EditText) linear.findViewById(R.id.et1);
+                        EditText edt = (EditText) linear.findViewById(R.id.et2);
                         String desc = edt.getText().toString();
+                        String mood = edt2.getText().toString();
+                        desc = mood + "/" + desc;
 
                         String str = view.getUrl();
                         String key = "";
@@ -145,8 +152,9 @@ public class Page3Fragment extends Fragment {
                                 break;
                             }
                         }
-                        if (flag)
-                            Toast.makeText(getContext(), "Wrong page", Toast.LENGTH_SHORT).show();
+                        if (flag || edt.getText().toString() == "" || edt2.getText().toString() == "") {
+                            Toast.makeText(getContext(), "Wrong Request", Toast.LENGTH_SHORT).show();
+                        }
                         else {
                             if (!str.contains("&t=")) {
                                 key = key + str.substring(index);
@@ -212,5 +220,4 @@ public class Page3Fragment extends Fragment {
 
         return rootView ;
     }
-
 }
