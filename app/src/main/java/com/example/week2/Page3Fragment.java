@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.week2.LogIn.user_name;
+
 public class Page3Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -38,10 +40,11 @@ public class Page3Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    static ArrayList<PlayList> playLists = new ArrayList<>();
+    static ArrayList<PlayList> playLists = new ArrayList<PlayList>();
 
     private static final String API_KEY = "AIzaSyANYM5TIbJohkt1_z0P48A4WB8IEr2cVe0";
     private static String VIDEO_ID = "STwHSJSA86c";
+
 
     public Page3Fragment() {
         // Required empty public constructor
@@ -56,8 +59,8 @@ public class Page3Fragment extends Fragment {
      * @return A new instance of fragment Page1Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Page1Fragment newInstance(String param1, String param2) {
-        Page1Fragment fragment = new Page1Fragment();
+    public static Page3Fragment newInstance(String param1, String param2) {
+        Page3Fragment fragment = new Page3Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,7 +81,8 @@ public class Page3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        Page3NetworkTask page3NetworkTask = new Page3NetworkTask("", "여기에 user", "여기에 explain", "여기에 time", "GET");
+        page3NetworkTask.execute();
         String url = "http://www.youtube.com";
 
         PlayList song = new PlayList();
@@ -131,7 +135,7 @@ public class Page3Fragment extends Fragment {
                     }
                 }
                 if(!str.contains("&t=")){
-                    key = str.substring(index);
+                    key = key + str.substring(index);
                 }
                 else{
                     int end = 0;
@@ -142,6 +146,10 @@ public class Page3Fragment extends Fragment {
                         }
                     }
                     key = str.substring(index, end);
+                    //show dialog
+                    Page3NetworkTask page3NetworkTask = new Page3NetworkTask(key, user_name, "여기에 explain", "여기에 time", "POST");
+                    page3NetworkTask.execute();
+
                 }
             }
         });

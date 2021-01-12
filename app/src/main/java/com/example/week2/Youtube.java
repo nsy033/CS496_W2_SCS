@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.week2.Page3Fragment.playLists;
+
 public class Youtube extends YouTubeBaseActivity {
 
     ImageView imageView = null;
@@ -98,17 +100,19 @@ public class Youtube extends YouTubeBaseActivity {
 
     public class MyGridAdapter extends BaseAdapter {
         Context context;
-        ArrayList<PlayList> playLists;
+
         int layout;
         LayoutInflater inf;
 
         public MyGridAdapter(Context context, int layout, ArrayList<PlayList> playLists) {
             this.context = context;
             this.layout = layout;
-            this.playLists = playLists;
+
             inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
+
+        @Override
         public int getCount() {
             return playLists.size();
         }

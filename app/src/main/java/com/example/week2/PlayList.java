@@ -10,6 +10,7 @@ public class PlayList {
     String keys;
     Date time;
     String explain;
+    String user;
 
     public PlayList(){
     }
@@ -21,6 +22,7 @@ public class PlayList {
     public String getExplain(){
         return explain;
     }
+    public String getUser() { return user; }
 
     public void setKeys(String keys) { this.keys = keys; }
     public void setTime(Date time) {
@@ -29,5 +31,5 @@ public class PlayList {
     public void setExplain(String explain) {
         this.explain = explain;
     }
-
+    public void setUser(String user) {this.user = user;}
 }
