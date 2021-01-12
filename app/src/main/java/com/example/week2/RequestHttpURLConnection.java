@@ -1,6 +1,8 @@
 package com.example.week2;
 
 import android.content.ContentValues;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import java.net.URL;
 
 import static com.example.week2.EditProfile.sendPostingList;
 import static com.example.week2.EditProfile.sendingPath;
+import static com.example.week2.Page1Fragment.username;
 
 public class RequestHttpURLConnection {
     public String request_get(String _url, ContentValues _params){
@@ -24,6 +27,9 @@ public class RequestHttpURLConnection {
             connection.setRequestMethod("GET"); //전송방식
             //connection.setDoOutput(true);       //데이터를 쓸 지 설정
             connection.setDoInput(true);        //데이터를 읽어올지 설정
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("name",username);
+
             InputStream is = connection.getInputStream();
             StringBuffer sb = new StringBuffer();
             BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
@@ -36,6 +42,8 @@ public class RequestHttpURLConnection {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;

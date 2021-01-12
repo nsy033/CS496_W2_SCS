@@ -56,6 +56,7 @@ public class Page1Fragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     static int ChangeFlag = 1;
+    static String username;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -114,12 +115,7 @@ public class Page1Fragment extends Fragment {
         }
         else{
             User tmpuser = listViewItemList.get(0);
-            adapter.setFront(null,tmpuser.getName(), tmpuser.getPhone(), tmpuser.getEmail(),tmpuser.getUser_profile(), tmpuser.getUser_profile_photo() );
-
-            Glide.with(recyclerView)
-                    .load(listViewItemList.get(0).user_profile_photo)
-                    .circleCrop()
-                    .into(adapter.iconImageView);
+            adapter.setFront(null,tmpuser.getName(), tmpuser.getPhone(), tmpuser.getEmail(),tmpuser.getUser_profile(), "http://192.249.18.249:3000/"+tmpuser.getUser_profile_photo() );
             adapter.notifyDataSetChanged();
             listview.setAdapter(adapter);
         }

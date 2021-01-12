@@ -102,7 +102,8 @@ public class Page2Fragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String Url = "http://192.249.18.249:3000/getphoto/";
+
+        String Url = "http://192.249.18.249:3000/userphoto/";
         adapter = new RecyclerAdapter();
         if(ChangeFlag == 1){
             NetworkTask networkTask = new NetworkTask(Url, null, "GET");
