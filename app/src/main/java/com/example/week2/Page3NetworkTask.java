@@ -83,19 +83,21 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
                 JSONArray jsonArray = new JSONArray(s);
 
                 playLists.clear();
+/*
                 PlayList song = new PlayList();
                 Date date = new Date();
+                song.setKeys("N_wbXDtZj6I");
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String time = format.format(date);
-                song.setKeys("Ib5ec71QIc8");
                 song.setTime(time);
-                song.setExplain("Ed Sheeran - Afterglow");
-                playLists.add(song);
+                song.setExplain(":)/아무도 없었던 가난했던 마음이\n보석 같은 너로 가득해 고마워");
+                playLists.add(song);*/
 
                 PlayList song2 = new PlayList();
-                song2.setKeys("DvC3MdUzjmM");
-                song2.setTime(time);
-                song2.setExplain("뉴홉클");
+                Date date2 = new Date();
+                song2.setKeys("wr13koest7w");
+                song2.setTime("2021-01-10 07:30:05");
+                song2.setExplain(";)/아름다운 청춘의 한 장 함께 써내려 가자");
                 playLists.add(song2);
                 for(int i = 0; i< jsonArray.length();i++){
                     JSONObject userObject = jsonArray.getJSONObject(i);
@@ -185,7 +187,10 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
 
                     s_time.setText(playLists.get(position).getTime().substring(2,10) + "uploaded");
                     String tmpstr = playLists.get(position).getExplain();
-                    if(!tmpstr.contains("/")) s_mood.setText("None");
+                    if(!tmpstr.contains("/")) {
+                        s_mood.setText("None");
+                        s_desc.setText(tmpstr);
+                    }
                     else{
                         String mood = "";
                         int index=0;
@@ -202,10 +207,6 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
                         s_desc.setText(desc);
                     }
                     //s_desc.setText(playLists.get(position).getExplain());
-
-                    s_time.setText(playLists.get(position).getTime());
-                    s_desc.setText(playLists.get(position).getExplain());
-
 
                 }
             });
