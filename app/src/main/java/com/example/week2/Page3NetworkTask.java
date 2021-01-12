@@ -7,9 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
@@ -43,7 +45,15 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
         }
         else{
             String postUrl = url + "/addmusic/";
-            result = requestHttpURLConnection.request_post(postUrl, null); // 해당 URL로 POST 보내기.
+            Music sendingMusic = new Music();
+            sendingMusic.setExplain(explain);
+            sendingMusic.setUser(user);
+            sendingMusic.setKey(key);
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = transFormat.parse(time);
+            sendingMusic.setTime(date);
+
+            result = requestHttpURLConnection.request_post_music(postUrl, sendingMusic); // 해당 URL로 POST 보내기.
         }
         return result;
     }
