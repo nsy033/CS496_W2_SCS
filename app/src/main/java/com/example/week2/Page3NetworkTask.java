@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -31,6 +32,7 @@ import static com.example.week2.Page3Fragment.playLists;
 import static com.example.week2.Youtube.gridView;
 import static com.example.week2.Youtube.imageView;
 import static com.example.week2.Youtube.s_desc;
+import static com.example.week2.Youtube.s_mood;
 import static com.example.week2.Youtube.s_time;
 import static com.example.week2.Youtube.ytp;
 
@@ -165,12 +167,15 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
 
             ImageView small = (ImageView) convertView.findViewById(R.id.smallcircle);
             //small.setImageDrawable(getDrawable(R.drawable.iconuser));
+//
+//            TextView time = (TextView)convertView.findViewById(R.id.cdtime);
+//            time.setText(playLists.get(position).getTime().substring(2,16));
 
             imageView = (ImageView) convertView.findViewById(R.id.youtubeimage);
 
             Glide.with(convertView)
                     .asBitmap()
-                    .load("https://img.youtube.com/vi/" + playLists.get(position).getKeys() + "/0.jpg")
+                    .load("https://img.youtube.com/vi/" + playLists.get(position).getKeys() + "/mqdefault.jpg")
                     .circleCrop()
                     .into(imageView);
 
@@ -178,8 +183,25 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
                 @Override
                 public void onClick(View view) {
                     ytp.loadVideo(playLists.get(position).getKeys());
-                    s_time.setText(time);
-                    s_desc.setText(playLists.get(position).getExplain());
+                    s_time.setText(playLists.get(position).getTime().substring(2,10) + "uploaded");
+                    String tmpstr = playLists.get(position).getExplain();
+                    if(!tmpstr.contains("/")) s_mood.setText("None");
+                    else{
+                        String mood = "";
+                        int index=0;
+                        for(int i=0;i<tmpstr.length();i++){
+                            if(tmpstr.charAt(i) != '/') mood = mood+tmpstr.charAt(i);
+                            else{
+                                index = i;
+                                break;
+                            }
+                        }
+                        mood = tmpstr.substring(0, index);
+                        String desc = tmpstr.substring(index+1);
+                        s_mood.setText(mood);
+                        s_desc.setText(desc);
+                    }
+                    //s_desc.setText(playLists.get(position).getExplain());
 
                 }
             });

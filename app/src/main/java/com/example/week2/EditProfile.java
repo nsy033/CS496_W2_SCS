@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -494,6 +495,10 @@ public class EditProfile extends AppCompatActivity {
                 String filePath = getImageFilePath(data);
                 if (filePath != null) {
                     mBitmap = BitmapFactory.decodeFile(filePath);
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                    mBitmap = rotatedBitmap;
 
                     Glide.with(getBaseContext())
                             .asBitmap()

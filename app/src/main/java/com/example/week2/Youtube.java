@@ -29,6 +29,7 @@ public class Youtube extends YouTubeBaseActivity {
     static ImageView imageView = null;
     static TextView s_time = null;
     static TextView s_desc = null;
+    static TextView s_mood = null;
     static GridView gridView = null;
     static int size;
 
@@ -39,9 +40,6 @@ public class Youtube extends YouTubeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.youtube);
-
-
-
 
         youtubeFragment = (YouTubePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.youtubeFragment);
@@ -62,9 +60,27 @@ public class Youtube extends YouTubeBaseActivity {
                 });
 
         s_time = (TextView) findViewById(R.id.s_time);
+        s_mood = (TextView) findViewById(R.id.s_mood);
         s_desc = (TextView) findViewById(R.id.s_desc);
-        s_time.setText(playLists.get(0).getTime());
-        s_desc.setText(playLists.get(0).getExplain());
+        s_time.setText(playLists.get(0).getTime().substring(2,10) + " uploaded");
+        String tmpstr = playLists.get(0).getExplain();
+        if(!tmpstr.contains("/")) s_mood.setText("None");
+        else{
+            String mood = "";
+            int index=0;
+            for(int i=0;i<tmpstr.length();i++){
+                if(tmpstr.charAt(i) != '/') mood = mood+tmpstr.charAt(i);
+                else{
+                    index = i;
+                    break;
+                }
+            }
+            mood = tmpstr.substring(0, index);
+            String desc = tmpstr.substring(index+1);
+            s_mood.setText(mood);
+            s_desc.setText(desc);
+        }
+        //s_desc.setText(playLists.get(0).getExplain());
 
         // this is size of your list with data
 
@@ -74,7 +90,7 @@ public class Youtube extends YouTubeBaseActivity {
         DisplayMetrics dm = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(dm);
         float density = dm.density;
-        int totalWidth = (int) (width * 40 * density);
+        int totalWidth = (int) (width * 105 * density);
         int singleItemWidth = (int) (width * density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(totalWidth, LinearLayout.LayoutParams.MATCH_PARENT);
 
@@ -82,6 +98,7 @@ public class Youtube extends YouTubeBaseActivity {
         gridView.setLayoutParams(params);
         //gridView.setColumnWidth(singleItemWidth);
         gridView.setHorizontalSpacing(2);
+        gridView.setStretchMode(GridView.NO_STRETCH);
         //gridView.setStretchMode(GridView.STRETCH_SPACING);
 
 
@@ -92,7 +109,5 @@ public class Youtube extends YouTubeBaseActivity {
         super.onBackPressed();
         finish();
     }
-
-
 
 }

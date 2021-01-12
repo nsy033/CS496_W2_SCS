@@ -3,66 +3,123 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:background="#353331"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/youtubeFragment"
         android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/s_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:includeFontPadding="false"
+            android:text="time"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="7dp"
+            android:includeFontPadding="false"
+            android:text="The mood for this day"
+            android:textColor="#918A7D"
+            android:textSize="21dp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
     <TextView
-        android:id="@+id/s_time"
+        android:id="@+id/s_mood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
         android:includeFontPadding="false"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="13dp" />
+        android:textColor="#F3F1F1"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="7dp"
+        android:includeFontPadding="false"
+        android:text="What you wanted to memorize"
+        android:textColor="#918A7D"
+        android:textSize="21dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/s_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
         android:includeFontPadding="false"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="13dp" />
+        android:textColor="#F3F1F1"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:includeFontPadding="false"
+        android:text="Your favorites"
+        android:textColor="#918A7D"
+        android:textSize="21dp"
+        android:textStyle="bold" />
 
     <HorizontalScrollView
+        android:id="@+id/title_horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:id="@+id/title_horizontalScrollView"
         android:layout_margin="1dp"
-        android:fillViewport="false">
+        android:layout_marginLeft="20dp"
+        android:fillViewport="false"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            android:orientation="horizontal">
 
             <GridView
+                android:id="@+id/cdimages"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/cdimages"
                 android:layout_gravity="center"
-                android:columnWidth="60dp"
-                />
+                android:layout_marginLeft="20dp"
+                android:columnWidth="320dp" />
         </LinearLayout>
     </HorizontalScrollView>
 
 
-<!--
+    <!--
     <view
         android:id="@+id/youtubeView"
         class="com.google.android.youtube.player.YouTubePlayerView"
