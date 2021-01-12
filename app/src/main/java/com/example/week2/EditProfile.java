@@ -148,14 +148,9 @@ public class EditProfile extends AppCompatActivity {
                 tmp.setPhone(phone.getText().toString());
                 tmp.setEmail(mail.getText().toString());
                 tmp.setUser_profile(profile.getText().toString());
-                /*if (mBitmap != null) {
-                    int count = adapter.getCount();
-                    multipartImageUpload();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Bitmap is null. Try again", Toast.LENGTH_SHORT).show();
-                }*/
+
                 multipartImageUpload();
+
             }
         });
 
@@ -267,6 +262,9 @@ public class EditProfile extends AppCompatActivity {
 
 
     public void forDialog2(Context context, String path){
+        String Url = "http://192.249.18.249:3000/getphoto/";
+        NetworkTask networkTask = new NetworkTask(Url, null, "GET", path, context);
+        networkTask.execute();
         builder = new AlertDialog.Builder(this);
 //        dlg = new Dialog(context);
 //        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -283,9 +281,6 @@ public class EditProfile extends AppCompatActivity {
         d_imageView = (ImageView) view.findViewById(R.id.imageView);
 
         data = new Photo();
-        String Url = "http://192.249.18.249:3000/getphoto/";
-        NetworkTask networkTask = new NetworkTask(Url, null, "GET", path, context);
-        networkTask.execute();
 
     }
 
@@ -375,7 +370,6 @@ public class EditProfile extends AppCompatActivity {
                     SimpleDateFormat transFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String to = transFormat2.format(from2);
                     d_date.setText(to);
-
                     d_desc.setText(data.getExplain());
                     Glide.with(context).load(data.getServer_place())
                             .centerCrop()
@@ -402,6 +396,8 @@ public class EditProfile extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                dlg = builder.create();
+                dlg.show();
             }
             else if(method == "POST"){
                 if(s == "fail"){
@@ -411,8 +407,7 @@ public class EditProfile extends AppCompatActivity {
 
                 }
             }
-            dlg = builder.create();
-            dlg.show();
+
         }
 
     }
@@ -647,6 +642,11 @@ public class EditProfile extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
                     sendingPath = response.toString().split(":3000/")[1];
+                    String path = sendingPath.substring(0, sendingPath.length()-1);
+                    sendPostingList.add(path);
+                    tmp.setUser_profile_photo(path);
+                    listViewItemList.set(0,tmp);
+
                 }
 
                 @Override
@@ -670,6 +670,6 @@ public class EditProfile extends AppCompatActivity {
             public void run() {
                 saveAndPost(tmp);
             }
-        }, 10000);
+        }, 5000);
     }
 }

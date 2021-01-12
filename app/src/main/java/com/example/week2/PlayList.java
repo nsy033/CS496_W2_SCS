@@ -8,7 +8,7 @@ import java.util.Date;
 public class PlayList {
 
     String keys;
-    Date time;
+    String time;
     String explain;
     String user;
 
@@ -16,7 +16,7 @@ public class PlayList {
     }
 
     public String getKeys() { return keys; }
-    public Date getTime(){
+    public String getTime(){
         return  time;
     }
     public String getExplain(){
@@ -25,7 +25,7 @@ public class PlayList {
     public String getUser() { return user; }
 
     public void setKeys(String keys) { this.keys = keys; }
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
     public void setExplain(String explain) {

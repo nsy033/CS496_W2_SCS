@@ -106,4 +106,65 @@ public class RequestHttpURLConnection {
         }
         return result;
     }
+    public String request_post_music(String _url, PlayList music){
+        String result = null;
+        try {
+            URL url = new URL(_url);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST"); //전송방식
+            connection.setDoOutput(true);       //데이터를 쓸 지 설정
+            connection.setDoInput(true);        //데이터를 읽어올지 설정
+            connection.setDefaultUseCaches(false);
+            // Set some headers to inform server about the type of the content
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            String json= "";
+            //build jsonObject
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("key",music.getKeys());
+            jsonObject.accumulate("user",music.getUser());
+            jsonObject.accumulate("explain",music.getExplain());
+            jsonObject.accumulate("time",music.getTime());
+            json = jsonObject.toString();
+            OutputStream os = connection.getOutputStream();
+            os.write(json.getBytes("UTF-8"));
+            os.flush();
+
+           /* PrintWriter pw = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), "EUC-KR"));
+            pw.write(json);
+            pw.flush();*/
+
+            // receive response as inputStream
+            try{
+                InputStream is = connection.getInputStream();
+                // convert inputstream to string
+                if(is != null){
+                    StringBuffer sb = new StringBuffer();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+                    while((result = br.readLine())!=null){
+                        sb.append(result);
+                    }
+                    result = sb.toString();
+                    return result;
+                }
+                else{
+                    result = "fail";
+                    return result;
+                }
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            finally{
+                connection.disconnect();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

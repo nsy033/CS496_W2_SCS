@@ -55,7 +55,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/cdimages"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:columnWidth="60dp"
+                />
         </LinearLayout>
     </HorizontalScrollView>
 
