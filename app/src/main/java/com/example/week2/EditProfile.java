@@ -144,6 +144,7 @@ public class EditProfile extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getBaseContext(), "save button clicked", Toast.LENGTH_SHORT).show();
                 tmp.setPhone(phone.getText().toString());
                 tmp.setEmail(mail.getText().toString());
                 tmp.setUser_profile(profile.getText().toString());
@@ -670,8 +671,5 @@ public class EditProfile extends AppCompatActivity {
                 saveAndPost(tmp);
             }
         }, 10000);
-
-
-
     }
 }

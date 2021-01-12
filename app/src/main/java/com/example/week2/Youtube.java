@@ -1,29 +1,24 @@
 package com.example.week2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +50,6 @@ public class Youtube extends YouTubeBaseActivity {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                         YouTubePlayer youTubePlayer, boolean b) {
-                        // do any work here to cue video, play video, etc.
                         ytp = youTubePlayer;
                         youTubePlayer.loadVideo(playLists.get(0).getKeys());
                     }
@@ -74,26 +68,32 @@ public class Youtube extends YouTubeBaseActivity {
         s_time.setText(to);
         s_desc.setText(playLists.get(0).getExplain());
 
-//        youtubeView = (YouTubePlayerView) findViewById(R.id.youtubeView);
-//
-//        listener = new YouTubePlayer.OnInitializedListener() {
-//            @Override
-//            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-//                youTubePlayer.loadVideo("STwHSJSA86c");
-//            }
-//            @Override
-//            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-//            }
-//        };
-//        youtubeView.initialize("AIzaSyANYM5TIbJohkt1_z0P48A4WB8IEr2cVe0", listener);
+        // this is size of your list with data
+        int size = playLists.size();
+        // Calculated single Item Layout Width for each grid element .. for me it was ~100dp
+        int width = 100 ;
+        // than just calculate sizes for layout params and use it
+        DisplayMetrics dm = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        float density = dm.density;
+        int totalWidth = (int) (width * size * density);
+        int singleItemWidth = (int) (width * density);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(totalWidth, LinearLayout.LayoutParams.MATCH_PARENT);
 
         gridView = (GridView) this.findViewById(R.id.cdimages);
+        gridView.setLayoutParams(params);
+        gridView.setColumnWidth(singleItemWidth);
+        gridView.setHorizontalSpacing(2);
+        gridView.setStretchMode(GridView.STRETCH_SPACING);
+        gridView.setNumColumns(size);
+
         MyGridAdapter adapter = new MyGridAdapter(
                 this,
                 R.id.fl,
                 playLists);    // 데이터
 
         gridView.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
 
     }
@@ -154,7 +154,6 @@ public class Youtube extends YouTubeBaseActivity {
                     s_time.setText(to);
                     s_desc.setText(playLists.get(position).getExplain());
                 }
-
             });
             return convertView;
         }
