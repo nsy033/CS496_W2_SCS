@@ -64,7 +64,10 @@ public class Youtube extends YouTubeBaseActivity {
         s_desc = (TextView) findViewById(R.id.s_desc);
         s_time.setText(playLists.get(0).getTime().substring(2,10) + " uploaded");
         String tmpstr = playLists.get(0).getExplain();
-        if(!tmpstr.contains("/")) s_mood.setText("None");
+        if(!tmpstr.contains("/")) {
+            s_mood.setText("None");
+            s_desc.setText(tmpstr);
+        }
         else{
             String mood = "";
             int index=0;
@@ -100,7 +103,6 @@ public class Youtube extends YouTubeBaseActivity {
         gridView.setHorizontalSpacing(2);
         gridView.setStretchMode(GridView.NO_STRETCH);
         //gridView.setStretchMode(GridView.STRETCH_SPACING);
-
 
 
     }

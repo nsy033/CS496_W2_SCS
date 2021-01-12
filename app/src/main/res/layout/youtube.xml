@@ -43,7 +43,7 @@
             android:layout_marginBottom="7dp"
             android:includeFontPadding="false"
             android:text="The mood for this day"
-            android:textColor="#918A7D"
+            android:textColor="#A8A296"
             android:textSize="21dp"
             android:textStyle="bold" />
     </FrameLayout>
@@ -67,7 +67,7 @@
         android:layout_marginBottom="7dp"
         android:includeFontPadding="false"
         android:text="What you wanted to memorize"
-        android:textColor="#918A7D"
+        android:textColor="#A8A296"
         android:textSize="21dp"
         android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
         android:layout_marginBottom="10dp"
         android:includeFontPadding="false"
         android:text="Your favorites"
-        android:textColor="#918A7D"
+        android:textColor="#A8A296"
         android:textSize="21dp"
         android:textStyle="bold" />
 
