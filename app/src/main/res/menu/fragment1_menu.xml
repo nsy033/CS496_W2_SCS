@@ -3,7 +3,7 @@
     xmlns:app = "http://schemas.android.com/apk/res-auto" >
     <item
         android:id = "@+id/search"
-        android:icon = "@drawable/iconuser"
+        android:icon = "@drawable/search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="Search" />

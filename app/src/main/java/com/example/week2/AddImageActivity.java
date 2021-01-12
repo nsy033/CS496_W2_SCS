@@ -22,7 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -68,6 +70,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -110,7 +113,7 @@ public class AddImageActivity extends AppCompatActivity{
     private ArrayList<String> permissions = new ArrayList<>();
     private final static int ALL_PERMISSIONS_RESULT = 107;
     private final static int IMAGE_RESULT = 200;
-    FloatingActionButton fabCamera, fabUpload;
+    Button fabUpload;
     Bitmap mBitmap;
     TextView textView;
     private String carry = "";
@@ -119,6 +122,7 @@ public class AddImageActivity extends AppCompatActivity{
     String time;
     JSONArray user_list = new JSONArray();
     ArrayList<String> items = new ArrayList<>();
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +131,8 @@ public class AddImageActivity extends AppCompatActivity{
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, items) ;
 
-        fabCamera = findViewById(R.id.fab);
         fabUpload = findViewById(R.id.fabUpload);
+        imageView = findViewById(R.id.select_photo);
         //textView = findViewById(R.id.textView);
         edt = (EditText) findViewById(R.id.et1);
 
@@ -146,13 +150,14 @@ public class AddImageActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        fabCamera.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
             }
         });
+
         fabUpload.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -266,12 +271,12 @@ public class AddImageActivity extends AppCompatActivity{
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            ImageView imageView = findViewById(R.id.imageView);
 
             if (requestCode == IMAGE_RESULT) {
                 String filePath = getImageFilePath(data);
                 if (filePath != null) {
                     mBitmap = BitmapFactory.decodeFile(filePath);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageView.setImageBitmap(mBitmap);
                 }
             }

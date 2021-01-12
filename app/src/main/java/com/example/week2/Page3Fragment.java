@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -118,7 +119,7 @@ public class Page3Fragment extends Fragment {
                 return false;
             }
         });
-        Button newPlayList = (Button) rootView.findViewById(R.id.newplaylist);
+        ImageButton newPlayList = (ImageButton) rootView.findViewById(R.id.newplaylist);
         newPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +199,7 @@ public class Page3Fragment extends Fragment {
             }
         });
 
-        Button showPlayList = (Button) rootView.findViewById(R.id.showplaylist);
+        ImageButton showPlayList = (ImageButton) rootView.findViewById(R.id.showplaylist);
         showPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
