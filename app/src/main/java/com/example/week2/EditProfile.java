@@ -71,7 +71,7 @@ import retrofit2.Retrofit;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.example.week2.ListViewAdapter.listViewItemList;
+import static com.example.week2.MainActivity.listViewItemList;
 import static com.example.week2.LogIn.user_name;
 import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page1Fragment.adapter;
@@ -670,12 +670,13 @@ public class EditProfile extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Handler handler = new Handler();
+        saveAndPost(tmp);
+       /* Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                saveAndPost(tmp);
+
             }
-        }, 5000);
+        }, 5000);*/
     }
 }

@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<User> listViewItem = new ArrayList<User>();
     public static String test= "";
     public static ArrayList<User> testlist = new ArrayList<User>();
+    public static ArrayList<User> listViewItemList = new ArrayList<User>() ;
+    public static ArrayList<Photo> recyclerViewItems = new ArrayList<Photo>();
     Bitmap user = null;
 
     @Override

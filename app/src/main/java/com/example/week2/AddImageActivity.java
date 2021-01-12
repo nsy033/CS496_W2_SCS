@@ -182,10 +182,6 @@ public class AddImageActivity extends AppCompatActivity{
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     time = format.format(now);
 
-                    System.out.println(carry);
-                    System.out.println(user_list);
-                    System.out.println(time);
-
                     multipartImageUpload();
                 }
                 else {

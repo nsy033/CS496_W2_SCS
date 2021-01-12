@@ -14,12 +14,13 @@ import java.util.ArrayList;
 
 import static com.example.week2.Page2Fragment.adapter;
 import static com.example.week2.Page2Fragment.recyclerView;
+import static com.example.week2.MainActivity.recyclerViewItems;
 
 public class NetworkTask extends AsyncTask<Void, Void, String> {
     private String url;
     private ContentValues values;
     private String method;
-    public static ArrayList<Photo> recyclerViewItems = new ArrayList<Photo>();
+
 
     public NetworkTask(String url, ContentValues values, String method) {
         this.url = url;
@@ -35,8 +36,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
         }
         else{
             result = requestHttpURLConnection.request_post(url, null); // 해당 URL로 POST 보내기.
-
-
         }
         return result;
     }
@@ -47,7 +46,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
         if (method == "GET"){
             try{
                 //Json parsing
-
                 JSONArray jsonArray = new JSONArray(s);
                 for(int i = 0; i< jsonArray.length();i++){
                     JSONObject photoObject = jsonArray.getJSONObject(i);
