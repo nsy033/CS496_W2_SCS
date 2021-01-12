@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import static com.example.week2.ListViewAdapter.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page1Fragment.adapter;
 import static com.example.week2.Page1Fragment.listview;
@@ -178,7 +177,7 @@ public class Page3NetworkTask extends AsyncTask<Void, Void, String> {
                 @Override
                 public void onClick(View view) {
                     ytp.loadVideo(playLists.get(position).getKeys());
-                    s_time.setText(time);
+                    s_time.setText(playLists.get(position).getTime());
                     s_desc.setText(playLists.get(position).getExplain());
 
                 }

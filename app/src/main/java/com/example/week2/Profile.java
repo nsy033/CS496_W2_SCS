@@ -52,7 +52,7 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
-import static com.example.week2.ListViewAdapter.listViewItemList;
+import static com.example.week2.MainActivity.listViewItemList;
 import static com.example.week2.MainActivity.testlist;
 import static com.example.week2.Page2Fragment.recyclerView;
 import static com.example.week2.RecyclerAdapter.listData;

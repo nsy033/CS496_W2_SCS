@@ -64,6 +64,10 @@ public class RequestHttpURLConnection {
             sendPostingList.add(path);
             jsonObject.accumulate("posting_list",sendPostingList);
             jsonObject.accumulate("profile_photo",path);
+            user.setUser_profile_photo(path);
+            MainActivity.listViewItemList.set(0, user);
+
+
             json = jsonObject.toString();
             OutputStream os = connection.getOutputStream();
             os.write(json.getBytes("UTF-8"));
@@ -166,5 +170,28 @@ public class RequestHttpURLConnection {
             e.printStackTrace();
         }
         return result;
+    }
+    public String request_get_firstphoto(String _url, ContentValues _params){
+        try {
+            URL url = new URL(_url);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET"); //전송방식
+            //connection.setDoOutput(true);       //데이터를 쓸 지 설정
+            connection.setDoInput(true);        //데이터를 읽어올지 설정
+            InputStream is = connection.getInputStream();
+            StringBuffer sb = new StringBuffer();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+            String result;
+            while((result = br.readLine())!=null){
+                sb.append(result);
+            }
+            result = sb.toString();
+            return result;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
