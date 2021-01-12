@@ -1,6 +1,9 @@
 package com.example.week2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -9,9 +12,13 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -85,11 +92,6 @@ public class Page3Fragment extends Fragment {
         song2.setKeys("DvC3MdUzjmM");
         song2.setTime(date2);
         song2.setExplain("뉴홉클");
-        playLists.add(song2);
-        playLists.add(song2);
-        playLists.add(song2);
-        playLists.add(song2);
-        playLists.add(song2);
 
         WebView view = rootView.findViewById(R.id.home_webview);
         view.setWebViewClient(new WebViewClient());
@@ -117,32 +119,74 @@ public class Page3Fragment extends Fragment {
         newPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = view.getUrl();
-                String key = "";
-                int index = 0;
-                for(int i=str.length()-1; i>=0; i--) {
-                    if(str.charAt(i)=='=' && str.charAt(i-1)=='v') {
-                        index = i+1;
-                        break;
-                    }
-                }
-                if(!str.contains("&t=")){
-                    key = key + str.substring(index);
-                }
-                else{
-                    int end = 0;
-                    for(int j=str.length()-1;j>=0;j--) {
-                        if(str.charAt(j)=='&' && str.charAt(j+1)=='t') {
-                            end = j-1;
-                            break;
-                        }
-                    }
-                    key = str.substring(index, end);
-                    //show dialog
-                    Page3NetworkTask page3NetworkTask = new Page3NetworkTask(key, user_name, "여기에 explain", "여기에 time", "POST");
-                    page3NetworkTask.execute();
+                final LinearLayout linear = (LinearLayout) View.inflate(getActivity(), R.layout.new_playlist_dialog, null);
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+                adb.setView(linear)
+                        .setTitle("Add new song")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText edt = (EditText) linear.findViewById(R.id.et1);
+                                String desc = edt.getText().toString();
 
-                }
+                                String str = view.getUrl();
+                                String key = "";
+                                int index = 0;
+                                boolean flag = true;
+                                for(int i=str.length()-1; i>=0; i--) {
+                                    if(str.charAt(i)=='=' && str.charAt(i-1)=='v') {
+                                        index = i+1;
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                                if(flag) Toast.makeText(getContext(), "Wrong page", Toast.LENGTH_SHORT).show();
+                                else {
+                                    if (!str.contains("&t=")) {
+                                        key = key + str.substring(index);
+                                        System.out.println(key);
+                                    } else {
+                                        int end = 0;
+                                        for (int j = str.length() - 1; j >= 0; j--) {
+                                            if (str.charAt(j) == '&' && str.charAt(j + 1) == 't') {
+                                                end = j - 1;
+                                                break;
+                                            }
+                                        }
+                                        key = str.substring(index, end);
+                                    }
+
+                                    Date date = new Date();
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    String time = format.format(date);
+
+                                    String name = user_name;
+
+                                    //key, desc, time, name
+                                    System.out.println(key + " " + desc + " " + time + " " + name);
+                                  
+                                    Page3NetworkTask page3NetworkTask = new Page3NetworkTask(key, user_name, "여기에 explain", "여기에 time", "POST");
+                                    page3NetworkTask.execute();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = adb.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#6E6557"));
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#6E6557"));
+                    }
+
+                });
+                dialog.show();
+
             }
         });
 
