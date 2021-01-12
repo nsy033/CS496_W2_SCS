@@ -22,14 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="log in with facebook" />
+        android:text="log in with facebook"
+        android:textColor="#4C3410" />
 
     <Button
         android:id="@+id/btn_custom_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="log out" />
+        android:text="log out"
+        android:textColor="#4C3410" />
 
     <Button
         android:id="@+id/btn_custom_go"
@@ -37,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="Get Started" />
+        android:text="Get Started"
+        android:textColor="#4C3410" />
 
 </FrameLayout>

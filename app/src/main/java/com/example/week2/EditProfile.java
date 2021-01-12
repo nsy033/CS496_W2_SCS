@@ -32,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,7 +123,7 @@ public class EditProfile extends AppCompatActivity {
                 .circleCrop()
                 .into(myphoto);
         initRetrofitClient();
-        Button btn = (Button) findViewById(R.id.profile_btn);
+        ImageButton btn = (ImageButton) findViewById(R.id.profile_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +141,7 @@ public class EditProfile extends AppCompatActivity {
         EditText mail = (EditText) findViewById(R.id.editmail);
         mail.setText(tmp.getEmail());
         gv = (GridView) this.findViewById(R.id.myposting);
-        Button saveButton = (Button) findViewById(R.id.saveButton);
+        ImageButton saveButton = (ImageButton) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

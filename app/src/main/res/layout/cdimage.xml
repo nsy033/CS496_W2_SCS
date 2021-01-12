@@ -9,14 +9,15 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:src="@drawable/iconuser"></ImageView>
+        android:src="@drawable/white_circle"></ImageView>
 
     <ImageView
         android:id="@+id/smallcircle"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/iconuser"></ImageView>
+        android:scaleType="fitCenter"
+        android:src="@drawable/white_circle"></ImageView>
 
 
 </FrameLayout>
