@@ -92,8 +92,6 @@ public class ListViewAdapter extends BaseAdapter {
     public void setFront(Bitmap icon, String title, String desc, String mail, String profile, String profile_photo) {
 
         User item = new User();
-
-
         item.setName(title);
         item.setPhone(desc);
         item.setEmail(mail);

@@ -38,36 +38,6 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
             result = requestHttpURLConnection.request_post(url, null); // 해당 URL로 POST 보내기.
         }
 
-        final Thread currentThread = Thread.currentThread();
-        Thread killerThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    System.out.println("프로세스 종료");
-                    return;} catch (Exception e) {}
-                try {
-                    System.out.println("시간초과로 인해 종료합니다.");
-                    currentThread.interrupt();} catch (Exception e) {}
-            }
-        };
-        try {
-            killerThread.start();
-            int limit = 10;
-            for (int i=0; i<limit; i++) {
-                System.out.println("진행중... (" + (i+1) + " / " + limit + ")");
-                Thread.sleep(100);
-            }
-        } catch (InterruptedException e) {
-            System.out.println("프로세스가 너무 오래 실행되고 있습니다. 프로세스를 종료합니다.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                killerThread.interrupt();} catch (Exception e) {}
-        }
-
         return result;
     }
     @Override
@@ -112,6 +82,7 @@ public class Page1NetworkTask extends AsyncTask<Void, Void, String> {
                 testlist.add(0, mine);
                 listViewItemList.addAll(testlist);
                 listview.setAdapter(adapter);
+                Page1Fragment.username = listViewItemList.get(0).name;
             }catch (JSONException e) {
                 e.printStackTrace();
             }
